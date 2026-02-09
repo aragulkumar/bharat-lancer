@@ -20,11 +20,18 @@ const VoiceInput = ({ onTranscriptReceived, language = 'ta-IN' }) => {
             return;
         }
 
-        // Initialize Speech Recognition
+        // Initialize Speech Recognition with optimized settings for Tamil
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = language; // 'ta-IN' for Tamil, 'en-IN' for English
+        recognition.maxAlternatives = 3; // Get multiple alternatives for better accuracy
+
+        // Better Tamil recognition settings
+        if (language === 'ta-IN') {
+            recognition.continuous = true; // Keep listening
+            recognition.interimResults = true; // Show interim results
+        }
 
         recognition.onstart = () => {
             setIsListening(true);
@@ -186,11 +193,13 @@ const VoiceInput = ({ onTranscriptReceived, language = 'ta-IN' }) => {
             )}
 
             <div className="voice-tips">
-                <p><strong>Tips:</strong></p>
+                <p><strong>🎤 Tamil Voice Input Tips:</strong></p>
                 <ul>
-                    <li>Speak clearly and mention: job type, skills needed, budget, and duration</li>
-                    <li>Example (Tamil): "எனக்கு ஒரு ரியாக்ட் டெவலப்பர் வேண்டும் 50000 ரூபாய்க்கு ஒரு மாதத்தில்"</li>
-                    <li>Example (English): "I need a React developer for 50000 rupees in one month"</li>
+                    <li><strong>Speak slowly and clearly</strong> in Tamil for best results</li>
+                    <li><strong>Mention:</strong> Job type, skills needed, budget (in rupees), and duration</li>
+                    <li><strong>Example:</strong> "எனக்கு ஒரு ரியாக்ட் டெவலப்பர் வேண்டும். ஐம்பதாயிரம் ரூபாய் பட்ஜெட். ஒரு மாதத்தில் முடிக்க வேண்டும்."</li>
+                    <li><strong>Tip:</strong> Say numbers clearly - "ஐம்பதாயிரம்" (fifty thousand) instead of "50000"</li>
+                    <li><strong>Works in English too!</strong> Just speak naturally</li>
                 </ul>
             </div>
         </div>

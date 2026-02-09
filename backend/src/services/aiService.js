@@ -18,23 +18,50 @@ const TECH_SKILLS = [
 ];
 
 /**
- * Translate text from one language to another
+ * Translate Tamil voice text to English using better API
+ * Only for voice input, not general text translation
  */
-exports.translateText = async (text, from = 'ta', to = 'en') => {
+exports.translateVoiceText = async (text, from = 'ta') => {
     try {
-        // Use free MyMemory API as fallback
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|${to}`;
-        const response = await fetch(url);
+        // Use LibreTranslate API for better accuracy (free, open source)
+        const url = 'https://libretranslate.de/translate';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                q: text,
+                source: from,
+                target: 'en',
+                format: 'text'
+            })
+        });
+        
         const data = await response.json();
         
-        if (data.responseStatus === 200) {
-            return data.responseData.translatedText;
+        if (data.translatedText) {
+            return data.translatedText;
         }
         
         throw new Error('Translation failed');
     } catch (error) {
-        console.error('Translation error:', error);
-        // Fallback: return original text
+        console.error('Voice translation error:', error);
+        
+        // Fallback to MyMemory API
+        try {
+            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|en`;
+            const fallbackResponse = await fetch(fallbackUrl);
+            const fallbackData = await fallbackResponse.json();
+            
+            if (fallbackData.responseStatus === 200) {
+                return fallbackData.responseData.translatedText;
+            }
+        } catch (fallbackError) {
+            console.error('Fallback translation failed:', fallbackError);
+        }
+        
+        // Last resort: return original text
         return text;
     }
 };
@@ -138,10 +165,11 @@ exports.extractJobTitle = (text, skills) => {
  */
 exports.processVoiceToJob = async (transcript, language = 'ta') => {
     try {
-        // Step 1: Translate if needed
+        // Step 1: Translate Tamil voice to English if needed
         let englishText = transcript;
-        if (language === 'ta') {
-            englishText = await exports.translateText(transcript, 'ta', 'en');
+        if (language === 'ta' || language === 'ta-IN') {
+            englishText = await exports.translateVoiceText(transcript, 'ta');
+            console.log('Tamil voice translated:', { original: transcript, translated: englishText });
         }
         
         // Step 2: Extract details

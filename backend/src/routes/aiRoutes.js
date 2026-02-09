@@ -43,34 +43,4 @@ router.post('/voice-to-job', protect, async (req, res) => {
     }
 });
 
-/**
- * POST /api/ai/translate
- * Translate text between languages
- */
-router.post('/translate', protect, async (req, res) => {
-    try {
-        const { text, from, to } = req.body;
-
-        if (!text) {
-            return res.status(400).json({
-                status: 'error',
-                message: 'Text is required'
-            });
-        }
-
-        const translated = await aiService.translateText(text, from || 'ta', to || 'en');
-
-        res.status(200).json({
-            status: 'success',
-            data: { translated }
-        });
-    } catch (error) {
-        console.error('Translation error:', error);
-        res.status(500).json({
-            status: 'error',
-            message: error.message || 'Error translating text'
-        });
-    }
-});
-
 module.exports = router;
