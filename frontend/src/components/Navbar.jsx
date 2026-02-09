@@ -28,6 +28,8 @@ const Navbar = () => {
     }, [isAuthenticated]);
 
     const fetchNotifications = async () => {
+        if (!isAuthenticated) return;
+
         try {
             const [notifResponse, countResponse] = await Promise.all([
                 notificationsAPI.getAll(),
@@ -37,6 +39,9 @@ const Navbar = () => {
             setUnreadCount(countResponse.data.data.count);
         } catch (error) {
             console.error('Error fetching notifications:', error);
+            // Don't crash the app if notifications fail
+            setNotifications([]);
+            setUnreadCount(0);
         }
     };
 
