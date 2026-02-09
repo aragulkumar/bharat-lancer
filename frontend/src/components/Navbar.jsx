@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Briefcase, MessageSquare, Award, Plus, ChevronDown, Bell, Moon, Sun } from 'lucide-react';
+import { Menu, X, User, LogOut, Briefcase, MessageSquare, Award, Plus, ChevronDown, Bell, Moon, Sun, Languages } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import { notificationsAPI } from '../services/api';
 import Button from './Button';
 import './Navbar.css';
@@ -15,6 +16,7 @@ const Navbar = () => {
     const [unreadCount, setUnreadCount] = useState(0);
     const { user, logout, isAuthenticated, isFreelancer, isEmployer } = useAuth();
     const { theme, toggleTheme } = useTheme();
+    const { language, toggleLanguage } = useLanguage();
     const navigate = useNavigate();
 
     // Fetch notifications
@@ -122,6 +124,13 @@ const Navbar = () => {
                                         </Link>
                                     )}
 
+                                    {isEmployer && (
+                                        <Link to="/applications" className="nav-link">
+                                            <Award size={18} />
+                                            Applications
+                                        </Link>
+                                    )}
+
                                     <Link to="/chat" className="nav-link">
                                         <MessageSquare size={18} />
                                         Chat
@@ -194,6 +203,17 @@ const Navbar = () => {
                                         aria-label="Toggle theme"
                                     >
                                         {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                                    </button>
+
+                                    {/* Language Toggle */}
+                                    <button
+                                        className="language-toggle"
+                                        onClick={toggleLanguage}
+                                        aria-label="Toggle language"
+                                        title={language === 'en' ? 'Switch to Tamil' : 'Switch to English'}
+                                    >
+                                        <Languages size={20} />
+                                        <span className="lang-text">{language === 'en' ? 'த' : 'EN'}</span>
                                     </button>
 
                                     {/* User Dropdown */}

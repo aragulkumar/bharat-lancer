@@ -1,0 +1,205 @@
+.applications-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+}
+
+.applications-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.applications-header h1 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: var(--spacing-xs);
+}
+
+.applications-header p {
+    color: var(--gray-600);
+    font-size: var(--text-base);
+}
+
+.applications-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.application-card {
+    padding: var(--spacing-lg);
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.freelancer-info {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.freelancer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xl);
+    font-weight: 700;
+}
+
+.freelancer-info h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--black);
+    margin: 0;
+}
+
+.freelancer-email {
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+    margin: var(--spacing-xs) 0 0 0;
+}
+
+.status-badge {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.status-pending {
+    background: var(--warning-light);
+    color: var(--warning);
+}
+
+.status-accepted {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.status-rejected {
+    background: var(--error-light);
+    color: var(--error);
+}
+
+.job-info {
+    margin-bottom: var(--spacing-md);
+}
+
+.job-info h4 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: var(--spacing-sm);
+}
+
+.app-meta {
+    display: flex;
+    gap: var(--spacing-lg);
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+}
+
+.app-meta span {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.cover-letter {
+    background: var(--gray-50);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.cover-letter strong {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--black);
+}
+
+.cover-letter p {
+    color: var(--gray-700);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+}
+
+.app-details {
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-700);
+}
+
+.app-actions {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+}
+
+.reply-section textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family);
+    font-size: var(--text-base);
+    margin-bottom: var(--spacing-md);
+    resize: vertical;
+}
+
+.reply-section textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.employer-message {
+    background: var(--info-light);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-top: var(--spacing-md);
+}
+
+.employer-message strong {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--info);
+}
+
+.employer-message p {
+    color: var(--gray-700);
+    margin: 0;
+}
+
+.chat-action {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    color: var(--gray-600);
+}
+
+.loading {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    font-size: var(--text-lg);
+    color: var(--gray-600);
+}

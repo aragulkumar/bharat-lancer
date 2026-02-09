@@ -55,9 +55,10 @@ export const jobsAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
-  getMatches: (id) => api.get(`/jobs/${id}/matches`),
-  apply: (id, data) => api.post(`/jobs/${id}/apply`, data),
-  contactFreelancer: (jobId, freelancerId) => api.post(`/jobs/${jobId}/contact/${freelancerId}`)
+  applyForJob: (jobId, data) => api.post(`/jobs/${jobId}/apply`, data),
+  getJobApplications: (jobId) => api.get(`/jobs/${jobId}/applications`),
+  contactFreelancer: (jobId, freelancerId) => api.post(`/jobs/${jobId}/contact/${freelancerId}`),
+  updateApplicationStatus: (jobId, applicationId, data) => api.put(`/jobs/${jobId}/applications/${applicationId}/status`, data)
 };
 
 // Chat API

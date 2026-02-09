@@ -211,23 +211,48 @@ const sampleJobs = [
 
 async function seedJobs() {
   try {
-    const employer = await User.findOne({ role: 'employer' });
+    // Get all employers
+    const employers = await User.find({ role: 'employer' }).limit(5);
     
-    if (!employer) {
-      console.log('⚠️  No employer found. Please create an employer account first.');
+    if (employers.length === 0) {
+      console.log('⚠️  No employers found. Please run seedUsers.js first.');
       process.exit(1);
     }
 
-    const jobsWithEmployer = sampleJobs.map(job => ({
-      ...job,
-      employer: employer._id,
-      status: 'open'
-    }));
+    console.log(`📊 Found ${employers.length} employers`);
 
-    const createdJobs = await Job.insertMany(jobsWithEmployer);
+    // Distribution: Ragul (10), Priya (3), Arjun (3), Sneha (2), Vikram (2)
+    const distribution = [10, 3, 3, 2, 2];
     
-    console.log(`✅ Successfully created ${createdJobs.length} sample jobs!`);
-    console.log(`📊 Jobs assigned to employer: ${employer.name}`);
+    // Delete existing jobs
+    await Job.deleteMany({});
+    console.log('🗑️  Cleared existing jobs');
+
+    const jobsWithEmployers = [];
+    let jobIndex = 0;
+
+    employers.forEach((employer, empIndex) => {
+      const jobCount = distribution[empIndex] || 0;
+      
+      for (let i = 0; i < jobCount && jobIndex < sampleJobs.length; i++) {
+        jobsWithEmployers.push({
+          ...sampleJobs[jobIndex],
+          employer: employer._id,
+          status: 'open'
+        });
+        jobIndex++;
+      }
+    });
+
+    const createdJobs = await Job.insertMany(jobsWithEmployers);
+    
+    console.log(`\n✅ Successfully created ${createdJobs.length} sample jobs!`);
+    console.log('\n📋 Job Distribution:');
+    
+    for (const employer of employers) {
+      const count = createdJobs.filter(j => j.employer.toString() === employer._id.toString()).length;
+      console.log(`  - ${employer.name}: ${count} jobs`);
+    }
     
     process.exit(0);
   } catch (error) {
