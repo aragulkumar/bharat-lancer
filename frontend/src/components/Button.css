@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
-    font-weight: 600;
+    font-weight: var(--font-semibold);
     border: none;
     border-radius: var(--radius-lg);
     cursor: pointer;
@@ -21,7 +21,7 @@
 
 /* Variants */
 .btn-primary {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
     color: var(--white);
     box-shadow: var(--shadow-md);
 }
@@ -31,6 +31,10 @@
     transform: translateY(-2px);
 }
 
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
 .btn-secondary {
     background: var(--white);
     color: var(--primary-blue);
@@ -38,7 +42,7 @@
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: var(--light-blue);
+    background: var(--info-light);
 }
 
 .btn-outline {
@@ -70,23 +74,33 @@
     background: #dc2626;
 }
 
+.btn-success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.btn-success:hover:not(:disabled) {
+    background: var(--accent-green-light);
+}
+
 /* Sizes */
 .btn-sm {
     padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     min-height: 36px;
 }
 
 .btn-md {
     padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    font-size: var(--text-base);
     min-height: 44px;
 }
 
 .btn-lg {
     padding: var(--spacing-lg) var(--spacing-xl);
-    font-size: 1.125rem;
+    font-size: var(--text-lg);
     min-height: 52px;
+    font-weight: var(--font-bold);
 }
 
 /* Full width */
@@ -97,14 +111,14 @@
 /* Loading state */
 .btn-loading {
     position: relative;
-    color: transparent;
+    pointer-events: none;
 }
 
 .btn-spinner {
     position: absolute;
     width: 20px;
     height: 20px;
-    border: 2px solid currentColor;
+    border: 3px solid var(--white);
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;

@@ -28,6 +28,9 @@ const Profile = () => {
         companyDescription: ''
     });
 
+    const [resumeFile, setResumeFile] = useState(null);
+    const [resumeFileName, setResumeFileName] = useState('');
+
     useEffect(() => {
         if (user) {
             setFormData({
@@ -47,6 +50,28 @@ const Profile = () => {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Validate file type
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                setError('Please upload a PDF or Word document');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                setError('File size must be less than 5MB');
+                return;
+            }
+
+            setResumeFile(file);
+            setResumeFileName(file.name);
+            setError('');
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -189,6 +214,37 @@ const Profile = () => {
                                         className="textarea"
                                         rows="4"
                                     />
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="input-label">Resume File (Optional)</label>
+                                    <div className="file-upload-area">
+                                        <input
+                                            type="file"
+                                            id="resume-file"
+                                            accept=".pdf,.doc,.docx"
+                                            onChange={handleFileChange}
+                                            className="file-input"
+                                        />
+                                        <label htmlFor="resume-file" className="file-upload-label">
+                                            {resumeFileName ? (
+                                                <>
+                                                    <span className="file-icon">📄</span>
+                                                    <span className="file-name">{resumeFileName}</span>
+                                                    <span className="file-change">Click to change</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span className="upload-icon">📁</span>
+                                                    <span className="upload-text">Upload Resume (PDF, DOC, DOCX)</span>
+                                                    <span className="upload-subtext">Max size: 5MB</span>
+                                                </>
+                                            )}
+                                        </label>
+                                    </div>
+                                    <small className="helper-text">
+                                        Upload your resume or fill the bio below
+                                    </small>
                                 </div>
 
                                 <div className="form-group">

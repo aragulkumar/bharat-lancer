@@ -69,6 +69,61 @@
     font-size: 0.875rem;
 }
 
+/* File Upload */
+.file-upload-area {
+    margin-bottom: var(--spacing-sm);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-2xl);
+    border: 2px dashed var(--border-medium);
+    border-radius: var(--radius-lg);
+    background: var(--bg-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+}
+
+.file-upload-label:hover {
+    border-color: var(--primary-blue);
+    background: var(--info-light);
+}
+
+.upload-icon,
+.file-icon {
+    font-size: 2.5rem;
+}
+
+.upload-text,
+.file-name {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--gray-900);
+}
+
+.upload-subtext,
+.file-change {
+    font-size: var(--text-sm);
+    color: var(--gray-500);
+}
+
+.file-name {
+    color: var(--primary-blue);
+}
+
+.file-change {
+    margin-top: var(--spacing-xs);
+}
+
 .error-message {
     padding: var(--spacing-md);
     background: rgba(239, 68, 68, 0.1);

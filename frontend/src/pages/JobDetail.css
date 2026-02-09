@@ -394,7 +394,14 @@
     border-radius: var(--radius-md);
     font-size: var(--text-base);
     font-family: inherit;
+    color: var(--gray-900);
+    background: var(--white);
     transition: border-color var(--transition-fast);
+}
+
+.form-group textarea::placeholder,
+.form-group input::placeholder {
+    color: var(--gray-400);
 }
 
 .form-group textarea {
@@ -406,6 +413,7 @@
 .form-group input:focus {
     outline: none;
     border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-row {
