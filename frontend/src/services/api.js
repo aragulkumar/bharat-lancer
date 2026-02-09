@@ -40,44 +40,47 @@ api.interceptors.response.use(
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
-  getProfile: () => api.get('/auth/profile'),
   updateProfile: (data) => api.put('/auth/profile', data)
 };
 
 // Jobs API
 export const jobsAPI = {
-  getAll: (params) => api.get('/jobs', { params }),
+  getAll: () => api.get('/jobs'),
   getById: (id) => api.get(`/jobs/${id}`),
   create: (data) => api.post('/jobs', data),
-  createVoice: (data) => api.post('/jobs/voice', data),
-  update: (id, data) => api.put(`/jobs/${id}`, data),
-  delete: (id) => api.delete(`/jobs/${id}`),
+  createWithVoice: (audioBlob) => {
+    const formData = new FormData();
+    formData.append('audio', audioBlob);
+    return api.post('/jobs/voice', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
   getMatches: (id) => api.get(`/jobs/${id}/matches`)
-};
-
-// Users API
-export const usersAPI = {
-  getSkillPassport: () => api.get('/users/skill-passport'),
-  updateSkillPassport: () => api.post('/users/skill-passport/update'),
-  extractSkills: (data) => api.post('/users/extract-skills', data)
 };
 
 // Chat API
 export const chatAPI = {
-  send: (data) => api.post('/chat/send', data),
-  upload: (data) => api.post('/chat/upload', data),
   getConversations: () => api.get('/chat/conversations'),
-  getConversation: (userId) => api.get(`/chat/${userId}`),
-  deleteMessage: (id) => api.delete(`/chat/${id}`)
+  getMessages: (userId) => api.get(`/chat/messages/${userId}`),
+  sendMessage: (data) => api.post('/chat/send', data),
+  uploadFile: (formData) => api.post('/chat/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
 };
 
-// Payments API
-export const paymentsAPI = {
-  create: (data) => api.post('/payments/create', data),
-  verify: (data) => api.post('/payments/verify', data),
-  getUserPayments: () => api.get('/payments/user'),
-  getPayment: (id) => api.get(`/payments/${id}`),
-  checkAccess: (jobId) => api.get(`/payments/access/${jobId}`)
+// Payment API
+export const paymentAPI = {
+  createOrder: (data) => api.post('/payments/create-order', data),
+  verifyPayment: (data) => api.post('/payments/verify', data)
+};
+
+// Notifications API
+export const notificationsAPI = {
+  getAll: () => api.get('/notifications'),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllAsRead: () => api.put('/notifications/read-all'),
+  delete: (id) => api.delete(`/notifications/${id}`)
 };
 
 export default api;
