@@ -47,6 +47,19 @@ exports.createJob = async (req, res) => {
     // Populate employer details
     await job.populate('employer', 'name email companyName');
 
+    // Find and notify matching freelancers
+    try {
+      const matches = await matchingService.findBestMatches(job, 10);
+      
+      // Send notifications to top 5 matches
+      for (const match of matches.slice(0, 5)) {
+        await notificationService.sendSkillMatchNotification(match.freelancer, job);
+      }
+    } catch (error) {
+      console.error('Error sending skill match notifications:', error);
+      // Don't fail job creation if notifications fail
+    }
+
     res.status(201).json({
       status: 'success',
       message: 'Job created successfully',
@@ -446,6 +459,58 @@ exports.getJobApplications = async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: error.message || 'Error fetching applications'
+    });
+  }
+};
+
+/**
+ * Contact a freelancer (employer only)
+ */
+exports.contactFreelancer = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const freelancerId = req.params.freelancerId;
+
+    // Get job and verify employer
+    const job = await Job.findById(jobId).populate('employer', 'name email');
+
+    if (!job) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Job not found'
+      });
+    }
+
+    // Check if user is the employer
+    if (job.employer._id.toString() !== req.user.id) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Only the job employer can contact freelancers'
+      });
+    }
+
+    // Get freelancer details
+    const freelancer = await User.findById(freelancerId);
+
+    if (!freelancer) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Freelancer not found'
+      });
+    }
+
+    // Send notification to freelancer
+    await notificationService.sendContactNotification(freelancer, job.employer, job);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Contact request sent successfully'
+    });
+  } catch (error) {
+    console.error('Contact freelancer error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error contacting freelancer'
     });
   }
 };

@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { jobsAPI } from '../services/api';
 import {
     MapPin, DollarSign, Clock, Briefcase, Calendar,
-    User, Award, Star, Send, X, CheckCircle, AlertCircle
+    User, Award, Star, Send, X, CheckCircle, AlertCircle, MessageCircle
 } from 'lucide-react';
 import Button from '../components/Button';
 import Card from '../components/Card';
@@ -66,6 +66,16 @@ const JobDetail = () => {
             alert(errorMessage);
         } finally {
             setApplying(false);
+        }
+    };
+
+    const handleContactFreelancer = async (freelancerId, freelancerName) => {
+        try {
+            await jobsAPI.contactFreelancer(id, freelancerId);
+            alert(`Contact request sent to ${freelancerName}! They will be notified.`);
+        } catch (error) {
+            console.error('Error contacting freelancer:', error);
+            alert('Failed to send contact request. Please try again.');
         }
     };
 
@@ -209,6 +219,15 @@ const JobDetail = () => {
                                                     <span key={i} className="skill-tag-sm">{skill}</span>
                                                 ))}
                                             </div>
+                                            <Button
+                                                variant="primary"
+                                                size="sm"
+                                                fullWidth
+                                                onClick={() => handleContactFreelancer(match.freelancer._id, match.freelancer.name)}
+                                            >
+                                                <MessageCircle size={16} />
+                                                Contact Freelancer
+                                            </Button>
                                         </div>
                                     ))}
                                 </div>

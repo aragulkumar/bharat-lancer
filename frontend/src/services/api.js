@@ -56,7 +56,8 @@ export const jobsAPI = {
     });
   },
   getMatches: (id) => api.get(`/jobs/${id}/matches`),
-  apply: (id, data) => api.post(`/jobs/${id}/apply`, data)
+  apply: (id, data) => api.post(`/jobs/${id}/apply`, data),
+  contactFreelancer: (jobId, freelancerId) => api.post(`/jobs/${jobId}/contact/${freelancerId}`)
 };
 
 // Chat API

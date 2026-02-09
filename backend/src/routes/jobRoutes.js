@@ -20,5 +20,9 @@ router.get('/:id/matches', protect, jobController.getJobMatches);
 router.post('/:id/apply', protect, jobController.applyForJob);
 router.get('/:id/applications', protect, isEmployer, jobController.getJobApplications);
 
+// Contact route
+router.post('/:jobId/contact/:freelancerId', protect, isEmployer, jobController.contactFreelancer);
+
 module.exports = router;
+
 
