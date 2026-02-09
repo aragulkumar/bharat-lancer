@@ -47,6 +47,7 @@ export const authAPI = {
 export const jobsAPI = {
   getAll: () => api.get('/jobs'),
   getById: (id) => api.get(`/jobs/${id}`),
+  getMatches: (id) => api.get(`/jobs/${id}/matches`),
   create: (data) => api.post('/jobs', data),
   createWithVoice: (audioBlob) => {
     const formData = new FormData();
@@ -64,11 +65,12 @@ export const jobsAPI = {
 // Chat API
 export const chatAPI = {
   getConversations: () => api.get('/chat/conversations'),
-  getMessages: (userId) => api.get(`/chat/messages/${userId}`),
+  getConversation: (userId) => api.get(`/chat/${userId}`),
   sendMessage: (data) => api.post('/chat/send', data),
   uploadFile: (formData) => api.post('/chat/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  deleteMessage: (id) => api.delete(`/chat/${id}`)
 };
 
 // Payment API

@@ -26,6 +26,7 @@ const JobDetail = () => {
     });
     const [applying, setApplying] = useState(false);
     const [applicationSuccess, setApplicationSuccess] = useState(false);
+    const [managingApplication, setManagingApplication] = useState(null);
 
     useEffect(() => {
         fetchJobDetails();
@@ -52,7 +53,7 @@ const JobDetail = () => {
         setApplying(true);
 
         try {
-            await jobsAPI.apply(id, applicationData);
+            await jobsAPI.applyForJob(id, applicationData);
 
             setApplicationSuccess(true);
             setTimeout(() => {
@@ -70,13 +71,27 @@ const JobDetail = () => {
     };
 
     const handleContactFreelancer = async (freelancerId, freelancerName) => {
+        // Redirect directly to chat with the freelancer
+        navigate(`/chat?userId=${freelancerId}`);
+    };
+
+    const handleApplicationAction = async (applicationId, action, freelancerName) => {
         try {
-            await jobsAPI.contactFreelancer(id, freelancerId);
-            alert(`Contact request sent to ${freelancerName}! They will be notified.`);
+            setManagingApplication(applicationId);
+            await jobsAPI.updateApplicationStatus(id, applicationId, { status: action });
+            alert(`Application ${action === 'accepted' ? 'accepted' : 'rejected'} successfully!`);
+            // Refresh job details to update application status
+            fetchJobDetails();
         } catch (error) {
-            console.error('Error contacting freelancer:', error);
-            alert('Failed to send contact request. Please try again.');
+            console.error('Error managing application:', error);
+            alert('Failed to update application status. Please try again.');
+        } finally {
+            setManagingApplication(null);
         }
+    };
+
+    const handleChatWithApplicant = (freelancerId) => {
+        navigate(`/chat?userId=${freelancerId}`);
     };
 
     const formatBudget = (amount) => {
@@ -180,6 +195,88 @@ const JobDetail = () => {
                             <h2>Job Description</h2>
                             <p className="job-description-text">{job.description}</p>
                         </Card>
+
+                        {/* Applications Section - Only for Employers */}
+                        {user && job.employer?._id === user.id && job.applications && job.applications.length > 0 && (
+                            <Card className="job-section">
+                                <h2>📋 Applications ({job.applications.length})</h2>
+                                <div className="applications-list">
+                                    {job.applications.map((application) => (
+                                        <div key={application._id} className="application-card">
+                                            <div className="application-header">
+                                                <div className="applicant-info">
+                                                    <div className="applicant-avatar">
+                                                        {application.freelancer?.name?.charAt(0).toUpperCase()}
+                                                    </div>
+                                                    <div>
+                                                        <h4>{application.freelancer?.name}</h4>
+                                                        <p className="applicant-email">{application.freelancer?.email}</p>
+                                                    </div>
+                                                </div>
+                                                <span className={`application-status status-${application.status}`}>
+                                                    {application.status}
+                                                </span>
+                                            </div>
+
+                                            <div className="application-details">
+                                                <p><strong>Cover Letter:</strong></p>
+                                                <p className="cover-letter">{application.coverLetter}</p>
+                                                <div className="application-meta">
+                                                    <span><strong>Proposed Rate:</strong> ₹{application.proposedRate}</span>
+                                                    <span><strong>Duration:</strong> {application.estimatedDuration}</span>
+                                                    <span><strong>Applied:</strong> {formatDate(application.appliedAt)}</span>
+                                                </div>
+                                            </div>
+
+                                            {application.status === 'pending' && (
+                                                <div className="application-actions">
+                                                    <Button
+                                                        variant="success"
+                                                        size="sm"
+                                                        onClick={() => handleApplicationAction(application._id, 'accepted', application.freelancer?.name)}
+                                                        loading={managingApplication === application._id}
+                                                    >
+                                                        <CheckCircle size={16} />
+                                                        Accept
+                                                    </Button>
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => handleApplicationAction(application._id, 'rejected', application.freelancer?.name)}
+                                                        loading={managingApplication === application._id}
+                                                    >
+                                                        <X size={16} />
+                                                        Reject
+                                                    </Button>
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        onClick={() => handleChatWithApplicant(application.freelancer?._id)}
+                                                    >
+                                                        <MessageCircle size={16} />
+                                                        Chat
+                                                    </Button>
+                                                </div>
+                                            )}
+
+                                            {application.status === 'accepted' && (
+                                                <div className="application-actions">
+                                                    <Button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        fullWidth
+                                                        onClick={() => handleChatWithApplicant(application.freelancer?._id)}
+                                                    >
+                                                        <MessageCircle size={16} />
+                                                        Start Chat
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        )}
 
                         {/* Required Skills */}
                         <Card className="job-section">

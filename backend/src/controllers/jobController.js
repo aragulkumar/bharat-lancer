@@ -130,7 +130,8 @@ exports.getJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)
       .populate('employer', 'name email companyName location')
-      .populate('selectedFreelancer', 'name email skills rating');
+      .populate('selectedFreelancer', 'name email skills rating')
+      .populate('applications.freelancer', 'name email skills hourlyRate location');
 
     if (!job) {
       return res.status(404).json({
