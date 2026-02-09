@@ -55,7 +55,8 @@ export const jobsAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
-  getMatches: (id) => api.get(`/jobs/${id}/matches`)
+  getMatches: (id) => api.get(`/jobs/${id}/matches`),
+  apply: (id, data) => api.post(`/jobs/${id}/apply`, data)
 };
 
 // Chat API

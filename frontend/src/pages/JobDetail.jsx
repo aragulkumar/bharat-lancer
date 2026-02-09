@@ -52,19 +52,18 @@ const JobDetail = () => {
         setApplying(true);
 
         try {
-            // TODO: Create application API endpoint in backend
-            // For now, simulate success
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await jobsAPI.apply(id, applicationData);
 
             setApplicationSuccess(true);
             setTimeout(() => {
                 setShowApplicationModal(false);
                 setApplicationSuccess(false);
-                // Could navigate to applications page or show success message
+                setApplicationData({ coverLetter: '', proposedRate: '', estimatedDuration: '' });
             }, 2000);
         } catch (error) {
             console.error('Error applying:', error);
-            alert('Failed to submit application. Please try again.');
+            const errorMessage = error.response?.data?.message || 'Failed to submit application. Please try again.';
+            alert(errorMessage);
         } finally {
             setApplying(false);
         }
