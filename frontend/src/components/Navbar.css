@@ -1,0 +1,135 @@
+.navbar {
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    padding: var(--spacing-md) 0;
+}
+
+.navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--gray-700);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--primary-blue);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-left: var(--spacing-lg);
+    border-left: 1px solid var(--gray-200);
+}
+
+.nav-username {
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.navbar-toggle {
+    background: none;
+    border: none;
+    color: var(--gray-700);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+.navbar-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid var(--gray-200);
+    animation: slideDown 0.3s ease-out;
+}
+
+.mobile-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    color: var(--gray-700);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+}
+
+.mobile-link:hover {
+    background: var(--gray-100);
+    color: var(--primary-blue);
+}
+
+.mobile-user {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+}
+
+.mobile-user span {
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+/* Responsive */
+.desktop {
+    display: flex;
+}
+
+.mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .desktop {
+        display: none;
+    }
+
+    .mobile {
+        display: flex;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

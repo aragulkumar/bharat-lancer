@@ -1,0 +1,211 @@
+.passport-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.passport-header h1 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.passport-header p {
+    color: var(--gray-600);
+    margin: 0;
+}
+
+.passport-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Score Card */
+.score-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+}
+
+.score-content {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    border-bottom: 2px solid var(--gray-200);
+    margin-bottom: var(--spacing-lg);
+}
+
+.score-icon {
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-md);
+}
+
+.score-value {
+    font-size: 4rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.score-label {
+    color: var(--gray-600);
+    font-size: 1.125rem;
+    margin-top: var(--spacing-sm);
+}
+
+.score-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.breakdown-item {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: var(--white);
+    border-radius: var(--radius-md);
+}
+
+.breakdown-item span {
+    display: block;
+    color: var(--gray-600);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.breakdown-item strong {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+}
+
+/* Skills Card */
+.skills-card h3,
+.top-skills-card h3 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.verified-icon {
+    color: var(--success);
+}
+
+.verified-skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.verified-skill-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.skill-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.skill-name {
+    font-weight: 600;
+    color: var(--gray-900);
+    text-transform: capitalize;
+}
+
+.skill-date {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+.skill-score-bar {
+    grid-column: 1 / -1;
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.skill-score-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    transition: width var(--transition-normal);
+}
+
+.skill-score-value {
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+/* Top Skills */
+.top-skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.top-skill-badge {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.no-skills {
+    color: var(--gray-500);
+    text-align: center;
+    padding: var(--spacing-xl);
+}
+
+/* Info Card */
+.info-card {
+    margin-top: var(--spacing-xl);
+}
+
+.info-card h3 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.info-item strong {
+    display: block;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-sm);
+}
+
+.info-item p {
+    color: var(--gray-600);
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .passport-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .passport-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .score-value {
+        font-size: 3rem;
+    }
+
+    .score-breakdown {
+        grid-template-columns: 1fr;
+    }
+}
