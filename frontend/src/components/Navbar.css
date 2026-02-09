@@ -228,6 +228,29 @@
     border-radius: 50%;
 }
 
+/* Theme Toggle */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-right: var(--spacing-md);
+}
+
+.theme-toggle:hover {
+    background: var(--gray-100);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    transform: rotate(20deg);
+}
+
 .nav-user {
     position: relative;
     display: flex;

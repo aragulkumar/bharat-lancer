@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Briefcase, MessageSquare, Award, Plus, ChevronDown, Bell } from 'lucide-react';
+import { Menu, X, User, LogOut, Briefcase, MessageSquare, Award, Plus, ChevronDown, Bell, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { notificationsAPI } from '../services/api';
 import Button from './Button';
 import './Navbar.css';
@@ -13,6 +14,7 @@ const Navbar = () => {
     const [notifications, setNotifications] = useState([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const { user, logout, isAuthenticated, isFreelancer, isEmployer } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
 
     // Fetch notifications
@@ -179,6 +181,15 @@ const Navbar = () => {
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* Theme Toggle */}
+                                    <button
+                                        className="theme-toggle"
+                                        onClick={toggleTheme}
+                                        aria-label="Toggle theme"
+                                    >
+                                        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                                    </button>
 
                                     {/* User Dropdown */}
                                     <button
