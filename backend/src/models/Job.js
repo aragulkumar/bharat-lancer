@@ -90,6 +90,12 @@ const jobSchema = new mongoose.Schema({
       type: String,
       enum: ['pending', 'accepted', 'rejected'],
       default: 'pending'
+    },
+    employerMessage: {
+      type: String
+    },
+    respondedAt: {
+      type: Date
     }
   }],
   

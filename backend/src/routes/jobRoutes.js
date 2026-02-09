@@ -23,6 +23,9 @@ router.get('/:id/applications', protect, isEmployer, jobController.getJobApplica
 // Contact route
 router.post('/:jobId/contact/:freelancerId', protect, isEmployer, jobController.contactFreelancer);
 
+// Application management routes
+router.put('/:jobId/applications/:applicationId/status', protect, isEmployer, jobController.updateApplicationStatus);
+
 module.exports = router;
 
 

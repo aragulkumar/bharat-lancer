@@ -62,7 +62,8 @@ exports.getConversation = async (req, res) => {
       $or: [
         { sender: req.user.id, receiver: userId },
         { sender: userId, receiver: req.user.id }
-      ]
+      ],
+      deletedBy: { $ne: req.user.id } // Exclude messages deleted by current user
     })
       .populate('sender', 'name email role')
       .populate('receiver', 'name email role')
@@ -99,7 +100,8 @@ exports.getAllConversations = async (req, res) => {
       $or: [
         { sender: req.user.id },
         { receiver: req.user.id }
-      ]
+      ],
+      deletedBy: { $ne: req.user.id } // Exclude messages deleted by current user
     })
       .populate('sender', 'name email role')
       .populate('receiver', 'name email role')
@@ -215,15 +217,19 @@ exports.deleteMessage = async (req, res) => {
       });
     }
 
-    // Only sender can delete
-    if (message.sender.toString() !== req.user.id) {
+    // Check if user is sender or receiver
+    if (message.sender.toString() !== req.user.id && message.receiver.toString() !== req.user.id) {
       return res.status(403).json({
         status: 'error',
-        message: 'You can only delete your own messages'
+        message: 'You can only delete messages from your conversations'
       });
     }
 
-    await Message.findByIdAndDelete(req.params.id);
+    // Soft delete: add user to deletedBy array
+    if (!message.deletedBy.includes(req.user.id)) {
+      message.deletedBy.push(req.user.id);
+      await message.save();
+    }
 
     res.status(200).json({
       status: 'success',
