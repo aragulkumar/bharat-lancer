@@ -515,3 +515,87 @@ exports.contactFreelancer = async (req, res) => {
   }
 };
 
+/**
+ * Update application status (accept/reject)
+ */
+exports.updateApplicationStatus = async (req, res) => {
+  try {
+    const { jobId, applicationId } = req.params;
+    const { status, message } = req.body;
+
+    if (!['accepted', 'rejected'].includes(status)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Status must be either accepted or rejected'
+      });
+    }
+
+    // Find job and verify employer
+    const job = await Job.findById(jobId).populate('employer', 'name email');
+
+    if (!job) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Job not found'
+      });
+    }
+
+    // Check if user is the employer
+    if (job.employer._id.toString() !== req.user.id) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Only the job employer can update application status'
+      });
+    }
+
+    // Find and update application
+    const application = job.applications.id(applicationId);
+
+    if (!application) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Application not found'
+      });
+    }
+
+    application.status = status;
+    if (message) {
+      application.employerMessage = message;
+    }
+    application.respondedAt = new Date();
+
+    await job.save();
+
+    // Populate freelancer for notification
+    await job.populate('applications.freelancer', 'name email');
+    const freelancer = job.applications.id(applicationId).freelancer;
+
+    // Send notification to freelancer
+    const notificationTitle = status === 'accepted' 
+      ? 'Application Accepted!' 
+      : 'Application Update';
+    const notificationMessage = status === 'accepted'
+      ? `Your application for "${job.title}" has been accepted!`
+      : `Your application for "${job.title}" has been reviewed.`;
+
+    await notificationService.createNotification(
+      freelancer._id,
+      'application',
+      notificationTitle,
+      notificationMessage,
+      { jobId: job._id }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Application status updated successfully',
+      data: { application }
+    });
+  } catch (error) {
+    console.error('Update application status error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error updating application status'
+    });
+  }
+};
