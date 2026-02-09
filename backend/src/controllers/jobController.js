@@ -1,6 +1,8 @@
 const Job = require('../models/Job');
+const User = require('../models/User');
 const matchingService = require('../services/matchingService');
 const voiceService = require('../services/voiceService');
+const notificationService = require('../services/notificationService');
 
 
 /**
@@ -325,3 +327,126 @@ exports.createVoiceJob = async (req, res) => {
     });
   }
 };
+
+/**
+ * Apply for a job
+ */
+exports.applyForJob = async (req, res) => {
+  try {
+    const { coverLetter, proposedRate, estimatedDuration } = req.body;
+    const jobId = req.params.id;
+
+    // Check if user is a freelancer
+    if (req.user.role !== 'freelancer') {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Only freelancers can apply for jobs'
+      });
+    }
+
+    // Find the job
+    const job = await Job.findById(jobId).populate('employer', 'name email');
+
+    if (!job) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Job not found'
+      });
+    }
+
+    // Check if job is still open
+    if (job.status !== 'open') {
+      return res.status(400).json({
+        status: 'error',
+        message: 'This job is no longer accepting applications'
+      });
+    }
+
+    // Check if already applied
+    const alreadyApplied = job.applications.some(
+      app => app.freelancer.toString() === req.user.id
+    );
+
+    if (alreadyApplied) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'You have already applied for this job'
+      });
+    }
+
+    // Add application
+    job.applications.push({
+      freelancer: req.user.id,
+      coverLetter,
+      proposedRate,
+      estimatedDuration,
+      status: 'pending'
+    });
+
+    await job.save();
+
+    // Get freelancer details for notification
+    const freelancer = await User.findById(req.user.id);
+
+    // Send notification to employer
+    await notificationService.sendApplicationNotification(job, freelancer);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Application submitted successfully',
+      data: { 
+        jobId: job._id,
+        jobTitle: job.title
+      }
+    });
+  } catch (error) {
+    console.error('Apply for job error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error submitting application'
+    });
+  }
+};
+
+/**
+ * Get applications for a job (employer only)
+ */
+exports.getJobApplications = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id)
+      .populate({
+        path: 'applications.freelancer',
+        select: 'name email skills hourlyRate aiSkillScore location'
+      });
+
+    if (!job) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Job not found'
+      });
+    }
+
+    // Check if user is the employer
+    if (job.employer.toString() !== req.user.id) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'You can only view applications for your own jobs'
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        jobTitle: job.title,
+        applications: job.applications
+      }
+    });
+  } catch (error) {
+    console.error('Get applications error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error fetching applications'
+    });
+  }
+};
+

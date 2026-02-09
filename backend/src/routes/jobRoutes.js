@@ -16,4 +16,9 @@ router.delete('/:id', protect, isEmployer, jobController.deleteJob);
 // AI Matching route
 router.get('/:id/matches', protect, jobController.getJobMatches);
 
+// Application routes
+router.post('/:id/apply', protect, jobController.applyForJob);
+router.get('/:id/applications', protect, isEmployer, jobController.getJobApplications);
+
 module.exports = router;
+

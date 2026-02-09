@@ -73,6 +73,15 @@ const jobSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
+    coverLetter: {
+      type: String
+    },
+    proposedRate: {
+      type: Number
+    },
+    estimatedDuration: {
+      type: String
+    },
     appliedAt: {
       type: Date,
       default: Date.now
