@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Briefcase, MessageSquare } from 'lucide-react';
+import { Menu, X, User, LogOut, Briefcase, MessageSquare, Award, Plus, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from './Button';
 import './Navbar.css';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { user, logout, isAuthenticated } = useAuth();
+    const [showDropdown, setShowDropdown] = useState(false);
+    const { user, logout, isAuthenticated, isFreelancer, isEmployer } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
+        setShowDropdown(false);
         navigate('/login');
     };
 
@@ -19,7 +21,6 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="container">
                 <div className="navbar-content">
-                    {/* Logo */}
                     <Link to="/" className="navbar-logo">
                         <span className="gradient-text">Bharat Lancer</span>
                     </Link>
@@ -28,26 +29,54 @@ const Navbar = () => {
                     <div className="navbar-menu desktop">
                         {isAuthenticated ? (
                             <>
-                                <Link to="/jobs" className="nav-link">
-                                    <Briefcase size={18} />
-                                    Jobs
-                                </Link>
-                                <Link to="/chat" className="nav-link">
-                                    <MessageSquare size={18} />
-                                    Chat
-                                </Link>
-                                {user?.role === 'freelancer' && (
-                                    <Link to="/skill-passport" className="nav-link">
-                                        <User size={18} />
-                                        Skill Passport
+                                <div className="nav-links">
+                                    <Link to="/jobs" className="nav-link">
+                                        <Briefcase size={18} />
+                                        Jobs
                                     </Link>
-                                )}
+
+                                    {isFreelancer && (
+                                        <Link to="/skill-passport" className="nav-link">
+                                            <Award size={18} />
+                                            Skill Passport
+                                        </Link>
+                                    )}
+
+                                    {isEmployer && (
+                                        <Link to="/create-job" className="nav-link">
+                                            <Plus size={18} />
+                                            Post Job
+                                        </Link>
+                                    )}
+
+                                    <Link to="/chat" className="nav-link">
+                                        <MessageSquare size={18} />
+                                        Chat
+                                    </Link>
+                                </div>
+
                                 <div className="nav-user">
-                                    <span className="nav-username">{user?.name}</span>
-                                    <Button variant="ghost" size="sm" onClick={handleLogout}>
-                                        <LogOut size={18} />
-                                        Logout
-                                    </Button>
+                                    <button
+                                        className="user-button"
+                                        onClick={() => setShowDropdown(!showDropdown)}
+                                    >
+                                        <User size={18} />
+                                        <span>{user?.name}</span>
+                                        <ChevronDown size={14} className={`chevron ${showDropdown ? 'open' : ''}`} />
+                                    </button>
+
+                                    {showDropdown && (
+                                        <div className="user-dropdown">
+                                            <Link to="/profile" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                                                <User size={16} />
+                                                Edit Profile
+                                            </Link>
+                                            <button className="dropdown-item logout" onClick={handleLogout}>
+                                                <LogOut size={16} />
+                                                Logout
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </>
                         ) : (
@@ -80,19 +109,34 @@ const Navbar = () => {
                                     <Briefcase size={20} />
                                     Jobs
                                 </Link>
+
+                                {isFreelancer && (
+                                    <Link to="/skill-passport" className="mobile-link" onClick={() => setIsOpen(false)}>
+                                        <Award size={20} />
+                                        Skill Passport
+                                    </Link>
+                                )}
+
+                                {isEmployer && (
+                                    <Link to="/create-job" className="mobile-link" onClick={() => setIsOpen(false)}>
+                                        <Plus size={20} />
+                                        Post Job
+                                    </Link>
+                                )}
+
                                 <Link to="/chat" className="mobile-link" onClick={() => setIsOpen(false)}>
                                     <MessageSquare size={20} />
                                     Chat
                                 </Link>
-                                {user?.role === 'freelancer' && (
-                                    <Link to="/skill-passport" className="mobile-link" onClick={() => setIsOpen(false)}>
-                                        <User size={20} />
-                                        Skill Passport
-                                    </Link>
-                                )}
+
+                                <Link to="/profile" className="mobile-link" onClick={() => setIsOpen(false)}>
+                                    <User size={20} />
+                                    Edit Profile
+                                </Link>
+
                                 <div className="mobile-user">
                                     <span>{user?.name}</span>
-                                    <Button variant="outline" size="sm" fullWidth onClick={handleLogout}>
+                                    <Button variant="outline" size="sm" fullWidth onClick={() => { handleLogout(); setIsOpen(false); }}>
                                         <LogOut size={18} />
                                         Logout
                                     </Button>

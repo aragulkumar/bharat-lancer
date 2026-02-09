@@ -8,6 +8,7 @@ import JobList from './pages/JobList';
 import JobDetail from './pages/JobDetail';
 import CreateJob from './pages/CreateJob';
 import SkillPassport from './pages/SkillPassport';
+import Profile from './pages/Profile';
 import Chat from './pages/Chat';
 import './App.css';
 
@@ -55,6 +56,15 @@ function App() {
                 element={
                   <ProtectedRoute requireRole="freelancer">
                     <SkillPassport />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 }
               />
