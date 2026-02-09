@@ -50,6 +50,11 @@ app.get('/', (req, res) => {
   });
 });
 
+// Routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
+
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
