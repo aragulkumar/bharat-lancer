@@ -320,7 +320,7 @@ const JobDetail = () => {
                                                 variant="primary"
                                                 size="sm"
                                                 fullWidth
-                                                onClick={() => handleContactFreelancer(match.freelancer._id, match.freelancer.name)}
+                                                onClick={() => handleContactFreelancer(match.freelancer.id, match.freelancer.name)}
                                             >
                                                 <MessageCircle size={16} />
                                                 Contact Freelancer

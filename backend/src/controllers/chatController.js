@@ -6,9 +6,10 @@ const User = require('../models/User');
  */
 exports.sendMessage = async (req, res) => {
   try {
-    const { receiverId, message, jobId } = req.body;
+    const { receiverId, content, message, jobId } = req.body;
+    const messageContent = content || message; // Accept both field names
 
-    if (!receiverId || !message) {
+    if (!receiverId || !messageContent) {
       return res.status(400).json({
         status: 'error',
         message: 'Please provide receiver ID and message'
@@ -29,7 +30,7 @@ exports.sendMessage = async (req, res) => {
       sender: req.user.id,
       receiver: receiverId,
       job: jobId,
-      message
+      message: messageContent
     });
 
     // Populate sender and receiver details
@@ -57,6 +58,15 @@ exports.getConversation = async (req, res) => {
   try {
     const { userId } = req.params;
 
+    // Get the other user's details
+    const otherUser = await User.findById(userId).select('name email role');
+    if (!otherUser) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'User not found'
+      });
+    }
+
     // Get all messages between current user and specified user
     const messages = await Message.find({
       $or: [
@@ -76,10 +86,35 @@ exports.getConversation = async (req, res) => {
       { isRead: true, readAt: new Date() }
     );
 
+    // Format messages to match frontend expectations
+    const formattedMessages = messages.map(msg => ({
+      _id: msg._id,
+      sender: msg.sender._id,
+      receiver: msg.receiver._id,
+      content: msg.message, // Map 'message' field to 'content' for frontend
+      createdAt: msg.createdAt,
+      isRead: msg.isRead
+    }));
+
+    // Return conversation object
+    const conversation = {
+      _id: `${req.user.id}_${userId}`, // Generate conversation ID
+      otherUser: {
+        _id: otherUser._id,
+        name: otherUser.name,
+        email: otherUser.email,
+        role: otherUser.role
+      },
+      messages: formattedMessages,
+      lastMessage: messages.length > 0 ? {
+        content: messages[messages.length - 1].message,
+        createdAt: messages[messages.length - 1].createdAt
+      } : null
+    };
+
     res.status(200).json({
       status: 'success',
-      results: messages.length,
-      data: { messages }
+      data: { conversation }
     });
   } catch (error) {
     console.error('Get conversation error:', error);
@@ -121,14 +156,17 @@ exports.getAllConversations = async (req, res) => {
           : msg.sender;
         
         conversationsMap.set(partnerId, {
-          partner: {
-            id: partner._id,
+          _id: `${req.user.id}_${partnerId}`,
+          otherUser: { // Changed from 'partner' to 'otherUser'
+            _id: partner._id,
             name: partner.name,
             email: partner.email,
             role: partner.role
           },
-          lastMessage: msg.message,
-          lastMessageAt: msg.createdAt,
+          lastMessage: {
+            content: msg.message,
+            createdAt: msg.createdAt
+          },
           unreadCount: 0
         });
       }
@@ -152,7 +190,7 @@ exports.getAllConversations = async (req, res) => {
       data: { conversations }
     });
   } catch (error) {
-    console.error('Get conversations error:', error);
+    console.error('Get all conversations error:', error);
     res.status(500).json({
       status: 'error',
       message: error.message || 'Error fetching conversations'
