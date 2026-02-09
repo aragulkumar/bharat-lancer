@@ -1,5 +1,7 @@
 const Job = require('../models/Job');
 const matchingService = require('../services/matchingService');
+const voiceService = require('../services/voiceService');
+
 
 /**
  * Create a new job
@@ -266,6 +268,60 @@ exports.deleteJob = async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: error.message || 'Error deleting job'
+    });
+  }
+};
+
+/**
+ * Create job from voice transcript (AI-powered)
+ */
+exports.createVoiceJob = async (req, res) => {
+  try {
+    const { transcript } = req.body;
+
+    if (!transcript) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Please provide voice transcript'
+      });
+    }
+
+    // Parse job from transcript
+    const parsedJob = voiceService.parseJobFromText(transcript);
+    
+    // Validate parsed data
+    const validation = voiceService.validateParsedJob(parsedJob);
+    
+    // Generate suggestions
+    const suggestions = voiceService.generateSuggestions(transcript);
+
+    // Create job with parsed data
+    const job = await Job.create({
+      employer: req.user.id,
+      ...parsedJob
+    });
+
+    // Populate employer details
+    await job.populate('employer', 'name email companyName');
+
+    // Get top matches immediately
+    const matches = await matchingService.findBestMatches(job, 5);
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Job created from voice input successfully',
+      data: { 
+        job,
+        validation,
+        suggestions,
+        topMatches: matches.slice(0, 3) // Show top 3 matches
+      }
+    });
+  } catch (error) {
+    console.error('Create voice job error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error creating job from voice'
     });
   }
 };

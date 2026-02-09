@@ -9,6 +9,7 @@ router.get('/:id', protect, jobController.getJob);
 
 // Employer-only routes
 router.post('/', protect, isEmployer, jobController.createJob);
+router.post('/voice', protect, isEmployer, jobController.createVoiceJob);
 router.put('/:id', protect, isEmployer, jobController.updateJob);
 router.delete('/:id', protect, isEmployer, jobController.deleteJob);
 
