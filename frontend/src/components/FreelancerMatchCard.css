@@ -1,0 +1,107 @@
+.freelancer-match-card {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.freelancer-match-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.match-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.freelancer-avatar-match {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.match-info {
+    flex: 1;
+}
+
+.match-info h4 {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--black);
+}
+
+.match-score {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--text-sm);
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.freelancer-bio {
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-md);
+    line-height: var(--leading-relaxed);
+}
+
+.matched-skills {
+    margin-bottom: var(--spacing-md);
+}
+
+.matched-skills strong {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--black);
+    margin-bottom: var(--spacing-xs);
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.skill-tag {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--gray-100);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    color: var(--gray-700);
+}
+
+.skill-tag.matched {
+    background: var(--success-light);
+    color: var(--success);
+    font-weight: 600;
+}
+
+.freelancer-details {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.message-btn {
+    gap: var(--spacing-xs);
+}

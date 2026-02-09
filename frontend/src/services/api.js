@@ -93,4 +93,10 @@ export const notificationsAPI = {
   delete: (id) => api.delete(`/notifications/${id}`)
 };
 
+// AI API
+export const aiAPI = {
+  voiceToJob: (data) => api.post('/ai/voice-to-job', data),
+  translate: (data) => api.post('/ai/translate', data)
+};
+
 export default api;
