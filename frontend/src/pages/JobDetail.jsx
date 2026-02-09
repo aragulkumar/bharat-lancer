@@ -1,19 +1,31 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { MapPin, DollarSign, Clock, Sparkles } from 'lucide-react';
-import { jobsAPI } from '../services/api';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Card from '../components/Card';
+import { jobsAPI } from '../services/api';
+import {
+    MapPin, DollarSign, Clock, Briefcase, Calendar,
+    User, Award, Star, Send, X, CheckCircle, AlertCircle
+} from 'lucide-react';
 import Button from '../components/Button';
+import Card from '../components/Card';
 import Loader from '../components/Loader';
 import './JobDetail.css';
 
 const JobDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { user, isFreelancer } = useAuth();
     const [job, setJob] = useState(null);
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { isFreelancer } = useAuth();
+    const [showApplicationModal, setShowApplicationModal] = useState(false);
+    const [applicationData, setApplicationData] = useState({
+        coverLetter: '',
+        proposedRate: '',
+        estimatedDuration: ''
+    });
+    const [applying, setApplying] = useState(false);
+    const [applicationSuccess, setApplicationSuccess] = useState(false);
 
     useEffect(() => {
         fetchJobDetails();
@@ -21,12 +33,13 @@ const JobDetail = () => {
 
     const fetchJobDetails = async () => {
         try {
-            const [jobRes, matchesRes] = await Promise.all([
+            const [jobResponse, matchesResponse] = await Promise.all([
                 jobsAPI.getById(id),
-                jobsAPI.getMatches(id)
+                jobsAPI.getMatches(id).catch(() => ({ data: { data: { matches: [] } } }))
             ]);
-            setJob(jobRes.data.data.job);
-            setMatches(matchesRes.data.data.matches || []);
+
+            setJob(jobResponse.data.data.job);
+            setMatches(matchesResponse.data.data.matches || []);
         } catch (error) {
             console.error('Error fetching job:', error);
         } finally {
@@ -34,116 +47,317 @@ const JobDetail = () => {
         }
     };
 
+    const handleApply = async (e) => {
+        e.preventDefault();
+        setApplying(true);
+
+        try {
+            // TODO: Create application API endpoint in backend
+            // For now, simulate success
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            setApplicationSuccess(true);
+            setTimeout(() => {
+                setShowApplicationModal(false);
+                setApplicationSuccess(false);
+                // Could navigate to applications page or show success message
+            }, 2000);
+        } catch (error) {
+            console.error('Error applying:', error);
+            alert('Failed to submit application. Please try again.');
+        } finally {
+            setApplying(false);
+        }
+    };
+
+    const formatBudget = (amount) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 0
+        }).format(amount);
+    };
+
+    const formatDate = (date) => {
+        return new Date(date).toLocaleDateString('en-IN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
     if (loading) {
         return <Loader fullScreen />;
     }
 
     if (!job) {
-        return <div className="container"><p>Job not found</p></div>;
+        return (
+            <div className="container">
+                <div className="error-state">
+                    <AlertCircle size={48} />
+                    <h2>Job Not Found</h2>
+                    <p>The job you're looking for doesn't exist or has been removed.</p>
+                    <Button onClick={() => navigate('/jobs')}>Back to Jobs</Button>
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="container">
-            <div className="job-detail-layout">
-                <div className="job-main">
-                    <Card gradient>
-                        <div className="job-header">
-                            <h1>{job.title}</h1>
-                            {job.createdViaVoice && (
-                                <span className="voice-badge">🎤 Voice Posted</span>
-                            )}
-                        </div>
-
-                        <div className="job-meta-row">
-                            <div className="meta-item">
-                                <MapPin size={18} />
-                                <span>{job.locationPreference || 'Remote'}</span>
-                            </div>
-                            <div className="meta-item">
-                                <DollarSign size={18} />
-                                <span>₹{job.budget?.min} - ₹{job.budget?.max}</span>
-                            </div>
-                            <div className="meta-item">
-                                <Clock size={18} />
-                                <span>{job.duration || 'Flexible'}</span>
-                            </div>
-                        </div>
-
-                        <div className="job-section">
-                            <h3>Description</h3>
-                            <p>{job.description}</p>
-                        </div>
-
-                        <div className="job-section">
-                            <h3>Required Skills</h3>
-                            <div className="skills-list">
-                                {job.requiredSkills.map((skill, index) => (
-                                    <span key={index} className="skill-tag">{skill}</span>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="job-section">
-                            <h3>Job Details</h3>
-                            <div className="details-grid">
-                                <div className="detail-item">
-                                    <strong>Type:</strong> {job.jobType}
-                                </div>
-                                <div className="detail-item">
-                                    <strong>Status:</strong> {job.status}
-                                </div>
-                                <div className="detail-item">
-                                    <strong>Posted:</strong> {new Date(job.createdAt).toLocaleDateString()}
-                                </div>
-                            </div>
-                        </div>
-
-                        {isFreelancer && (
-                            <Button variant="primary" size="lg" fullWidth>
-                                Apply for this Job
-                            </Button>
-                        )}
-                    </Card>
-                </div>
-
-                {!isFreelancer && matches.length > 0 && (
-                    <div className="job-sidebar">
-                        <Card className="matches-card">
-                            <div className="matches-header">
-                                <Sparkles size={20} className="sparkle-icon" />
-                                <h3>AI Matched Freelancers</h3>
-                            </div>
-
-                            <div className="matches-list">
-                                {matches.slice(0, 5).map((match, index) => (
-                                    <div key={index} className="match-item">
-                                        <div className="match-header">
-                                            <h4>{match.freelancer.name}</h4>
-                                            <div className="match-score">
-                                                {match.matchScore}%
-                                            </div>
-                                        </div>
-
-                                        <p className="match-location">{match.freelancer.location}</p>
-
-                                        <div className="match-skills">
-                                            {match.freelancer.skills.slice(0, 3).map((skill, i) => (
-                                                <span key={i} className="match-skill">{skill}</span>
-                                            ))}
-                                        </div>
-
-                                        <p className="match-explanation">{match.explanation}</p>
-
-                                        <div className="match-rate">
-                                            ₹{match.freelancer.hourlyRate}/hr
+        <div className="job-detail-page">
+            <div className="container">
+                <div className="job-detail-layout">
+                    {/* Main Content */}
+                    <div className="job-main-content">
+                        {/* Job Header */}
+                        <Card className="job-header-card">
+                            <div className="job-header">
+                                <div className="employer-section">
+                                    <div className="employer-avatar-large">
+                                        {job.employer?.name?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="employer-details">
+                                        <h1 className="job-title">{job.title}</h1>
+                                        <div className="employer-meta">
+                                            <span className="employer-name">{job.employer?.name}</span>
+                                            <span className="separator">•</span>
+                                            <span className="job-location">
+                                                <MapPin size={16} />
+                                                {job.location}
+                                            </span>
+                                            <span className="separator">•</span>
+                                            <span className="job-posted">
+                                                Posted {formatDate(job.createdAt)}
+                                            </span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="job-quick-stats">
+                                <div className="quick-stat">
+                                    <DollarSign size={20} />
+                                    <div>
+                                        <span className="stat-label">Budget</span>
+                                        <span className="stat-value">{formatBudget(job.budget)}</span>
+                                    </div>
+                                </div>
+                                <div className="quick-stat">
+                                    <Clock size={20} />
+                                    <div>
+                                        <span className="stat-label">Duration</span>
+                                        <span className="stat-value">{job.duration}</span>
+                                    </div>
+                                </div>
+                                <div className="quick-stat">
+                                    <Briefcase size={20} />
+                                    <div>
+                                        <span className="stat-label">Type</span>
+                                        <span className="stat-value">{job.type}</span>
+                                    </div>
+                                </div>
+                                <div className="quick-stat">
+                                    <Calendar size={20} />
+                                    <div>
+                                        <span className="stat-label">Status</span>
+                                        <span className="stat-value status-open">{job.status}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+
+                        {/* Job Description */}
+                        <Card className="job-section">
+                            <h2>Job Description</h2>
+                            <p className="job-description-text">{job.description}</p>
+                        </Card>
+
+                        {/* Required Skills */}
+                        <Card className="job-section">
+                            <h2>Required Skills</h2>
+                            <div className="skills-list">
+                                {job.requiredSkills.map((skill, index) => (
+                                    <span key={index} className="skill-badge">
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </Card>
+
+                        {/* AI Matched Freelancers */}
+                        {isFreelancer === false && matches.length > 0 && (
+                            <Card className="job-section">
+                                <h2>
+                                    <Award size={24} />
+                                    AI-Matched Freelancers
+                                </h2>
+                                <div className="matches-grid">
+                                    {matches.slice(0, 6).map((match, index) => (
+                                        <div key={index} className="match-card">
+                                            <div className="match-header">
+                                                <div className="freelancer-avatar">
+                                                    {match.freelancer.name.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div className="match-score">
+                                                    <Star size={16} fill="currentColor" />
+                                                    {match.score}%
+                                                </div>
+                                            </div>
+                                            <h4>{match.freelancer.name}</h4>
+                                            <p className="match-reason">{match.reason}</p>
+                                            <div className="freelancer-skills">
+                                                {match.freelancer.skills.slice(0, 3).map((skill, i) => (
+                                                    <span key={i} className="skill-tag-sm">{skill}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        )}
                     </div>
-                )}
+
+                    {/* Sidebar */}
+                    <div className="job-sidebar">
+                        <Card className="sidebar-card sticky">
+                            {isFreelancer ? (
+                                <>
+                                    <h3>Ready to Apply?</h3>
+                                    <p className="sidebar-text">
+                                        Submit your proposal and stand out from other freelancers
+                                    </p>
+
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
+                                        fullWidth
+                                        onClick={() => setShowApplicationModal(true)}
+                                    >
+                                        <Send size={20} />
+                                        Apply for this Job
+                                    </Button>
+
+                                    <div className="sidebar-divider"></div>
+
+                                    <div className="sidebar-info">
+                                        <h4>About the Client</h4>
+                                        <div className="client-info">
+                                            <User size={18} />
+                                            <div>
+                                                <p className="info-label">Employer</p>
+                                                <p className="info-value">{job.employer?.name}</p>
+                                            </div>
+                                        </div>
+                                        <div className="client-info">
+                                            <MapPin size={18} />
+                                            <div>
+                                                <p className="info-label">Location</p>
+                                                <p className="info-value">{job.employer?.location || 'Not specified'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <h3>Job Management</h3>
+                                    <p className="sidebar-text">
+                                        View AI-matched candidates below
+                                    </p>
+                                    <Button variant="secondary" fullWidth onClick={() => navigate('/jobs')}>
+                                        Back to Jobs
+                                    </Button>
+                                </>
+                            )}
+                        </Card>
+                    </div>
+                </div>
             </div>
+
+            {/* Application Modal */}
+            {showApplicationModal && (
+                <div className="modal-overlay" onClick={() => !applying && setShowApplicationModal(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        {applicationSuccess ? (
+                            <div className="success-state">
+                                <CheckCircle size={64} />
+                                <h2>Application Submitted!</h2>
+                                <p>The employer will review your proposal and get back to you soon.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="modal-header">
+                                    <h2>Apply for {job.title}</h2>
+                                    <button
+                                        className="modal-close"
+                                        onClick={() => setShowApplicationModal(false)}
+                                        disabled={applying}
+                                    >
+                                        <X size={24} />
+                                    </button>
+                                </div>
+
+                                <form onSubmit={handleApply} className="application-form">
+                                    <div className="form-group">
+                                        <label>Cover Letter *</label>
+                                        <textarea
+                                            required
+                                            rows="6"
+                                            placeholder="Explain why you're the best fit for this project..."
+                                            value={applicationData.coverLetter}
+                                            onChange={(e) => setApplicationData({ ...applicationData, coverLetter: e.target.value })}
+                                            disabled={applying}
+                                        />
+                                    </div>
+
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label>Your Proposed Rate (₹) *</label>
+                                            <input
+                                                type="number"
+                                                required
+                                                placeholder="50000"
+                                                value={applicationData.proposedRate}
+                                                onChange={(e) => setApplicationData({ ...applicationData, proposedRate: e.target.value })}
+                                                disabled={applying}
+                                            />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label>Estimated Duration *</label>
+                                            <input
+                                                type="text"
+                                                required
+                                                placeholder="e.g., 2 weeks"
+                                                value={applicationData.estimatedDuration}
+                                                onChange={(e) => setApplicationData({ ...applicationData, estimatedDuration: e.target.value })}
+                                                disabled={applying}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="modal-actions">
+                                        <Button
+                                            type="button"
+                                            variant="secondary"
+                                            onClick={() => setShowApplicationModal(false)}
+                                            disabled={applying}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            type="submit"
+                                            variant="primary"
+                                            loading={applying}
+                                        >
+                                            Submit Application
+                                        </Button>
+                                    </div>
+                                </form>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
