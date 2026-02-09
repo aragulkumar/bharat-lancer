@@ -1,4 +1,5 @@
-const translate = require('@vitalets/google-translate-api');
+// Use node-fetch for API calls (Node.js doesn't have native fetch)
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 /**
  * AI Service for voice-to-text processing
@@ -23,45 +24,39 @@ const TECH_SKILLS = [
  */
 exports.translateVoiceText = async (text, from = 'ta') => {
     try {
-        // Use LibreTranslate API for better accuracy (free, open source)
-        const url = 'https://libretranslate.de/translate';
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                q: text,
-                source: from,
-                target: 'en',
-                format: 'text'
-            })
-        });
+        console.log('🔄 Translating Tamil voice:', text.substring(0, 100));
         
+        // Use MyMemory API (more reliable, free)
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|en`;
+        const response = await fetch(url);
         const data = await response.json();
         
-        if (data.translatedText) {
-            return data.translatedText;
+        if (data.responseStatus === 200 && data.responseData.translatedText) {
+            console.log('✅ Translation successful:', data.responseData.translatedText.substring(0, 100));
+            return data.responseData.translatedText;
         }
         
-        throw new Error('Translation failed');
+        throw new Error('Translation API returned error');
     } catch (error) {
-        console.error('Voice translation error:', error);
+        console.error('❌ Voice translation error:', error.message);
         
-        // Fallback to MyMemory API
+        // Fallback: Try Google Translate Free API
         try {
-            const fallbackUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${from}|en`;
-            const fallbackResponse = await fetch(fallbackUrl);
-            const fallbackData = await fallbackResponse.json();
+            const googleUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=en&dt=t&q=${encodeURIComponent(text)}`;
+            const googleResponse = await fetch(googleUrl);
+            const googleData = await googleResponse.json();
             
-            if (fallbackData.responseStatus === 200) {
-                return fallbackData.responseData.translatedText;
+            if (googleData && googleData[0] && googleData[0][0] && googleData[0][0][0]) {
+                const translated = googleData[0].map(item => item[0]).join(' ');
+                console.log('✅ Google Translate fallback successful:', translated.substring(0, 100));
+                return translated;
             }
         } catch (fallbackError) {
-            console.error('Fallback translation failed:', fallbackError);
+            console.error('❌ Fallback translation failed:', fallbackError.message);
         }
         
         // Last resort: return original text
+        console.warn('⚠️ Using original text as translation failed');
         return text;
     }
 };
