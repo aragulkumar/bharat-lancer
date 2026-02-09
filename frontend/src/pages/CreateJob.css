@@ -12,6 +12,41 @@
     margin: 0;
 }
 
+.create-job-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--spacing-xl);
+    align-items: start;
+}
+
+.create-job-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.matched-freelancers-sidebar {
+    position: sticky;
+    top: var(--spacing-xl);
+}
+
+.matched-freelancers-sidebar h3 {
+    margin-top: 0;
+    font-size: var(--text-xl);
+    color: var(--black);
+}
+
+.sidebar-subtitle {
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.freelancer-matches {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 .create-job-content {
     max-width: 600px;
     margin: 0 auto;
@@ -110,6 +145,16 @@
     border-radius: var(--radius-md);
     color: var(--error);
     font-size: 0.875rem;
+}
+
+@media (max-width: 1024px) {
+    .create-job-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .matched-freelancers-sidebar {
+        position: static;
+    }
 }
 
 @media (max-width: 768px) {
