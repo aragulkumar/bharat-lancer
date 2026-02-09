@@ -1,9 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import JobList from './pages/JobList';
@@ -15,6 +17,127 @@ import Chat from './pages/Chat';
 import Applications from './pages/Applications';
 import './App.css';
 
+// Layout wrapper for authenticated routes
+function AuthenticatedLayout({ children }) {
+  return (
+    <>
+      <Sidebar />
+      <div className="main-content-with-sidebar">
+        {children}
+      </div>
+    </>
+  );
+}
+
+// Layout wrapper for public routes
+function PublicLayout({ children }) {
+  const location = useLocation();
+  const showNavbar = location.pathname !== '/';
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <main className="main-content">
+        {children}
+      </main>
+    </>
+  );
+}
+
+function AppRoutes() {
+  const { user } = useAuth();
+
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={
+        user ? <Navigate to="/jobs" replace /> :
+          <PublicLayout><Landing /></PublicLayout>
+      } />
+      <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+      <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+
+      {/* Protected Routes with Sidebar */}
+      <Route
+        path="/jobs"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <JobList />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/jobs/:id"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <JobDetail />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/create-job"
+        element={
+          <ProtectedRoute requireRole="employer">
+            <AuthenticatedLayout>
+              <CreateJob />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/skill-passport"
+        element={
+          <ProtectedRoute requireRole="freelancer">
+            <AuthenticatedLayout>
+              <SkillPassport />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Profile />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/applications"
+        element={
+          <ProtectedRoute requireRole="employer">
+            <AuthenticatedLayout>
+              <Applications />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/chat"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Chat />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,77 +145,7 @@ function App() {
         <LanguageProvider>
           <AuthProvider>
             <div className="app">
-              <Navbar />
-              <main className="main-content">
-                <Routes>
-                  <Route path="/" element={<Navigate to="/jobs" replace />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-
-                  <Route
-                    path="/jobs"
-                    element={
-                      <ProtectedRoute>
-                        <JobList />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/jobs/:id"
-                    element={
-                      <ProtectedRoute>
-                        <JobDetail />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/create-job"
-                    element={
-                      <ProtectedRoute requireRole="employer">
-                        <CreateJob />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/skill-passport"
-                    element={
-                      <ProtectedRoute requireRole="freelancer">
-                        <SkillPassport />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/profile"
-                    element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/applications"
-                    element={
-                      <ProtectedRoute requireRole="employer">
-                        <Applications />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
-                    path="/chat"
-                    element={
-                      <ProtectedRoute>
-                        <Chat />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </main>
+              <AppRoutes />
             </div>
           </AuthProvider>
         </LanguageProvider>
