@@ -15,6 +15,15 @@ import SkillPassport from './pages/SkillPassport';
 import Profile from './pages/Profile';
 import Chat from './pages/Chat';
 import Applications from './pages/Applications';
+import Tasks from './pages/Tasks';
+import Users from './pages/Users';
+import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
+import Reports from './pages/Reports';
+import Support from './pages/Support';
+import Channels from './pages/Channels';
+import Autotrack from './pages/Autotrack';
+import Networks from './pages/Networks';
 import './App.css';
 
 // Layout wrapper for authenticated routes
@@ -130,6 +139,105 @@ function AppRoutes() {
           <ProtectedRoute>
             <AuthenticatedLayout>
               <Chat />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Tasks />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/users"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Users />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Notifications />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Settings />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Reports />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/support"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Support />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/channels"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Channels />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/autotrack"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Autotrack />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/networks"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Networks />
             </AuthenticatedLayout>
           </ProtectedRoute>
         }

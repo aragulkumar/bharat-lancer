@@ -3,17 +3,23 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import {
-    Briefcase,
+    Home,
+    Activity,
+    CheckSquare,
+    Users,
+    Bell,
+    Settings,
     FileText,
-    MessageSquare,
-    User,
-    LogOut,
-    Menu,
-    X,
-    ChevronLeft,
-    ChevronRight,
+    HelpCircle,
+    Radio,
+    Zap,
+    Network,
     Sun,
-    Moon
+    Moon,
+    ChevronDown,
+    ChevronRight,
+    MoreHorizontal,
+    Search
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -22,153 +28,231 @@ const Sidebar = () => {
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [expandedItems, setExpandedItems] = useState(['activity']);
 
     const handleLogout = () => {
         logout();
         navigate('/');
     };
 
-    const menuItems = [
+    const toggleExpand = (itemId) => {
+        setExpandedItems(prev =>
+            prev.includes(itemId)
+                ? prev.filter(id => id !== itemId)
+                : [...prev, itemId]
+        );
+    };
+
+    // Menu structure matching reference
+    const menuSections = [
         {
-            path: '/jobs',
-            icon: <Briefcase size={20} />,
-            label: 'Jobs',
-            roles: ['employer', 'freelancer']
+            id: 'main',
+            label: 'MENU',
+            items: [
+                {
+                    id: 'home',
+                    path: '/jobs',
+                    icon: <Home size={20} />,
+                    label: 'Home'
+                },
+                {
+                    id: 'activity',
+                    path: '/applications',
+                    icon: <Activity size={20} />,
+                    label: 'Activity',
+                    badge: 21,
+                    expandable: true
+                },
+                {
+                    id: 'task',
+                    path: '/tasks',
+                    icon: <CheckSquare size={20} />,
+                    label: 'Task'
+                },
+                {
+                    id: 'users',
+                    path: '/users',
+                    icon: <Users size={20} />,
+                    label: 'Users'
+                },
+                {
+                    id: 'notification',
+                    path: '/notifications',
+                    icon: <Bell size={20} />,
+                    label: 'Notification',
+                    badge: 21
+                }
+            ]
         },
         {
-            path: '/applications',
-            icon: <FileText size={20} />,
-            label: 'Applications',
-            roles: ['employer', 'freelancer']
+            id: 'settings',
+            divider: true,
+            items: [
+                {
+                    id: 'settings',
+                    path: '/settings',
+                    icon: <Settings size={20} />,
+                    label: 'Settings'
+                },
+                {
+                    id: 'report',
+                    path: '/reports',
+                    icon: <FileText size={20} />,
+                    label: 'Report'
+                },
+                {
+                    id: 'support',
+                    path: '/support',
+                    icon: <HelpCircle size={20} />,
+                    label: 'Support'
+                }
+            ]
         },
         {
-            path: '/chat',
-            icon: <MessageSquare size={20} />,
-            label: 'Messages',
-            roles: ['employer', 'freelancer']
-        },
-        {
-            path: '/profile',
-            icon: <User size={20} />,
-            label: 'Profile',
-            roles: ['employer', 'freelancer']
+            id: 'channels',
+            divider: true,
+            items: [
+                {
+                    id: 'channels',
+                    path: '/channels',
+                    icon: <Radio size={20} />,
+                    label: 'Channels',
+                    badge: 5
+                },
+                {
+                    id: 'autotrack',
+                    path: '/autotrack',
+                    icon: <Zap size={20} />,
+                    label: 'Autotrack',
+                    statusBadge: 'Active'
+                },
+                {
+                    id: 'networks',
+                    path: '/networks',
+                    icon: <Network size={20} />,
+                    label: 'Networks',
+                    badge: 3
+                }
+            ]
         }
     ];
 
-    const filteredMenuItems = menuItems.filter(item =>
-        item.roles.includes(user?.role)
-    );
-
     return (
-        <>
-            {/* Mobile Menu Button */}
-            <button
-                className="mobile-menu-button"
-                onClick={() => setMobileOpen(!mobileOpen)}
-            >
-                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+        <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+            {/* Sidebar Header */}
+            <div className="sidebar-header">
+                <div className="sidebar-brand">
+                    <div className="brand-icon">BL</div>
+                    {!collapsed && <span className="brand-text">Bharat Lancer</span>}
+                </div>
+            </div>
 
-            {/* Mobile Overlay */}
-            {mobileOpen && (
-                <div
-                    className="sidebar-overlay"
-                    onClick={() => setMobileOpen(false)}
-                />
+            {/* Search Bar */}
+            {!collapsed && (
+                <div className="sidebar-search">
+                    <Search size={18} className="search-icon" />
+                    <input type="text" placeholder="Search..." />
+                </div>
             )}
 
-            {/* Sidebar */}
-            <aside className={`sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}>
-                {/* Sidebar Header */}
-                <div className="sidebar-header">
-                    <div className="sidebar-brand">
-                        <div className="brand-icon">BL</div>
-                        {!collapsed && <span className="brand-text">Bharat Lancer</span>}
+            {/* Navigation Sections */}
+            <div className="sidebar-content">
+                {menuSections.map((section, sectionIndex) => (
+                    <div key={section.id}>
+                        {/* Section Label */}
+                        {section.label && !collapsed && (
+                            <div className="menu-label">{section.label}</div>
+                        )}
+
+                        {/* Divider */}
+                        {section.divider && !collapsed && (
+                            <div className="menu-divider"></div>
+                        )}
+
+                        {/* Menu Items */}
+                        <nav className="sidebar-nav">
+                            {section.items.map((item) => (
+                                <div key={item.id}>
+                                    <NavLink
+                                        to={item.path}
+                                        className={({ isActive }) =>
+                                            `nav-item ${isActive ? 'active' : ''}`
+                                        }
+                                        title={collapsed ? item.label : ''}
+                                    >
+                                        <span className="nav-icon">{item.icon}</span>
+                                        {!collapsed && (
+                                            <>
+                                                <span className="nav-label">{item.label}</span>
+                                                {item.badge && (
+                                                    <span className="nav-badge">{item.badge}</span>
+                                                )}
+                                                {item.statusBadge && (
+                                                    <span className="status-badge active">{item.statusBadge}</span>
+                                                )}
+                                                {item.expandable && (
+                                                    <button
+                                                        className="expand-btn"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            toggleExpand(item.id);
+                                                        }}
+                                                    >
+                                                        {expandedItems.includes(item.id) ? (
+                                                            <ChevronDown size={16} />
+                                                        ) : (
+                                                            <ChevronRight size={16} />
+                                                        )}
+                                                    </button>
+                                                )}
+                                            </>
+                                        )}
+                                    </NavLink>
+                                </div>
+                            ))}
+                        </nav>
                     </div>
+                ))}
+            </div>
+
+            {/* Theme Switcher */}
+            {!collapsed && (
+                <div className="theme-switcher">
                     <button
-                        className="collapse-button desktop-only"
-                        onClick={() => setCollapsed(!collapsed)}
-                        title={collapsed ? 'Expand' : 'Collapse'}
+                        className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
+                        onClick={() => theme !== 'dark' && toggleTheme()}
                     >
-                        {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                        <Moon size={16} />
+                        <span>Dark</span>
+                    </button>
+                    <button
+                        className={`theme-option ${theme === 'light' ? 'active' : ''}`}
+                        onClick={() => theme !== 'light' && toggleTheme()}
+                    >
+                        <Sun size={16} />
+                        <span>Light</span>
                     </button>
                 </div>
+            )}
 
-                {/* Search Bar */}
+            {/* User Profile */}
+            <div className="sidebar-user">
+                <div className="user-avatar">
+                    {user?.name?.charAt(0).toUpperCase() || 'A'}
+                </div>
                 {!collapsed && (
-                    <div className="sidebar-search">
-                        <input type="text" placeholder="Search..." />
-                    </div>
-                )}
-
-                {/* Menu Label */}
-                {!collapsed && <div className="menu-label">MENU</div>}
-
-                {/* User Profile */}
-                <div className="sidebar-user">
-                    <div className="user-avatar">
-                        {user?.name?.charAt(0).toUpperCase()}
-                    </div>
-                    {!collapsed && (
+                    <>
                         <div className="user-info">
-                            <div className="user-name">{user?.name}</div>
-                            <div className="user-role">{user?.role}</div>
+                            <div className="user-name">{user?.name || 'Alexander'}</div>
+                            <div className="user-email">{user?.email || 'alex@zemlya.com'}</div>
                         </div>
-                    )}
-                </div>
-
-                {/* Navigation Menu */}
-                <nav className="sidebar-nav">
-                    {filteredMenuItems.map((item) => (
-                        <NavLink
-                            key={item.path}
-                            to={item.path}
-                            className={({ isActive }) =>
-                                `nav-item ${isActive ? 'active' : ''}`
-                            }
-                            onClick={() => setMobileOpen(false)}
-                            title={collapsed ? item.label : ''}
-                        >
-                            <span className="nav-icon">{item.icon}</span>
-                            {!collapsed && <span className="nav-label">{item.label}</span>}
-                        </NavLink>
-                    ))}
-                </nav>
-
-                {/* Theme Toggle */}
-                {!collapsed && (
-                    <div className="theme-toggle-section">
-                        <button
-                            className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
-                            onClick={() => theme !== 'dark' && toggleTheme()}
-                        >
-                            <Moon size={16} />
-                            <span>Dark</span>
+                        <button className="user-menu-btn">
+                            <MoreHorizontal size={20} />
                         </button>
-                        <button
-                            className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
-                            onClick={() => theme !== 'light' && toggleTheme()}
-                        >
-                            <Sun size={16} />
-                            <span>Light</span>
-                        </button>
-                    </div>
+                    </>
                 )}
-
-                {/* Logout Button */}
-                <div className="sidebar-footer">
-                    <button
-                        className="logout-button"
-                        onClick={handleLogout}
-                        title={collapsed ? 'Logout' : ''}
-                    >
-                        <span className="nav-icon"><LogOut size={20} /></span>
-                        {!collapsed && <span className="nav-label">Logout</span>}
-                    </button>
-                </div>
-            </aside>
-        </>
+            </div>
+        </aside>
     );
 };
 

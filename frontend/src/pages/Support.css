@@ -1,0 +1,67 @@
+.support-page {
+    padding: 2rem;
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.support-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.support-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto 1.5rem;
+}
+
+.support-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.support-card p {
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+}
+
+.faq-section {
+    margin-top: 3rem;
+    padding: 2rem;
+}
+
+.faq-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.faq-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+}
+
+.faq-item p {
+    color: var(--gray-600);
+    line-height: 1.6;
+}

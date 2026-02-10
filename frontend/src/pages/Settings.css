@@ -1,0 +1,43 @@
+.settings-page {
+    padding: 2rem;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.setting-card {
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.setting-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.setting-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.setting-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.setting-card p {
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+}

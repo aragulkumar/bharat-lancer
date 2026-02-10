@@ -1,0 +1,71 @@
+.networks-page {
+    padding: 2rem;
+}
+
+.networks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.network-card {
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.network-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.network-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto 1.5rem;
+}
+
+.network-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.network-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.network-status {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.network-status.connected {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.network-status.pending {
+    background: #FEF3C7;
+    color: #D97706;
+}
