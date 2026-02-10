@@ -22,27 +22,44 @@ exports.parseJobFromVoice = async (req, res) => {
 
         // Create prompt for structured extraction
         const prompt = `
-You are an AI assistant that extracts job posting information from voice transcripts.
-Parse the following transcript and extract job details in JSON format.
+You are an AI assistant that extracts job posting information from voice transcripts in ANY language (English, Tamil, Hindi, etc.).
+
+IMPORTANT INSTRUCTIONS:
+1. If the transcript is in Tamil or any other language, TRANSLATE it to English first
+2. Extract job details and return them in English
+3. For budget amounts, be smart about parsing:
+   - "10K" or "10 thousand" = 10000
+   - "50K" or "50 thousand" = 50000
+   - "1 lakh" or "100K" = 100000
+   - "2 lakhs" or "200K" = 200000
+   - Tamil numbers: "பத்து ஆயிரம்" (10 thousand) = 10000
+   - If only ONE amount is mentioned, use it as budgetMax and set budgetMin to 0
+   - If TWO amounts mentioned, smaller is budgetMin, larger is budgetMax
 
 Transcript: "${transcript}"
 
 Extract and return ONLY a valid JSON object with these fields:
 {
-  "title": "job title (e.g., 'Python Developer', 'Full Stack Engineer')",
-  "description": "detailed job description",
+  "title": "job title in English (e.g., 'Python Developer', 'Full Stack Engineer')",
+  "description": "detailed job description in English (translate if needed)",
   "requiredSkills": ["skill1", "skill2", "skill3"],
-  "budgetMin": number (in rupees, convert K to thousands),
-  "budgetMax": number (in rupees, convert K to thousands),
-  "locationPreference": "location (e.g., 'Remote', 'Mumbai', 'Bangalore')",
-  "duration": "duration (e.g., '3 months', '2 weeks')",
+  "budgetMin": number (in rupees, 0 if not mentioned or only max mentioned),
+  "budgetMax": number (in rupees, 0 if not mentioned),
+  "locationPreference": "location in English (e.g., 'Remote', 'Mumbai', 'Chennai')",
+  "duration": "duration in English (e.g., '3 months', '2 weeks')",
   "jobType": "freelance" or "contract" or "full-time" or "part-time"
 }
 
+EXAMPLES:
+- "எனக்கு Python developer வேணும் 50K-க்கு" → budgetMin: 0, budgetMax: 50000
+- "I need developer for 30000 to 50000" → budgetMin: 30000, budgetMax: 50000
+- "Budget is 1 lakh" → budgetMin: 0, budgetMax: 100000
+- "பத்து ஆயிரம் to இருபது ஆயிரம்" → budgetMin: 10000, budgetMax: 20000
+
 Rules:
+- ALWAYS translate non-English text to English
 - If a field is not mentioned, use empty string "" or empty array []
 - For budgetMin/budgetMax, use 0 if not mentioned
-- Convert "10K" to 10000, "50k" to 50000, etc.
 - Return ONLY the JSON object, no additional text
 - Ensure all fields are present in the response
 `;

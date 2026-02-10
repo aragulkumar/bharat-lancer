@@ -46,7 +46,7 @@ const JobList = () => {
             const recognitionInstance = new SpeechRecognition();
             recognitionInstance.continuous = true;
             recognitionInstance.interimResults = true;
-            recognitionInstance.lang = 'en-US';
+            recognitionInstance.lang = 'ta-IN'; // Tamil language support (change to 'en-US' for English)
 
             recognitionInstance.onresult = (event) => {
                 let interimTranscript = '';
