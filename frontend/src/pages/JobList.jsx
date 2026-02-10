@@ -24,6 +24,7 @@ const JobList = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [showJobModal, setShowJobModal] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
     const [recognition, setRecognition] = useState(null);
     const [transcript, setTranscript] = useState('');
     const [jobFormData, setJobFormData] = useState({
