@@ -30,7 +30,11 @@
 .navbar-menu {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--spacing-lg);
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .nav-link {
@@ -75,7 +79,8 @@
 .nav-links {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
+    margin-right: var(--spacing-xl);
 }
 
 /* Notification Bell */
@@ -290,8 +295,9 @@
     position: relative;
     display: flex;
     align-items: center;
-    padding-left: var(--spacing-lg);
-    border-left: 1px solid var(--gray-200);
+    gap: var(--spacing-md);
+    padding-left: var(--spacing-xl);
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .user-button {
