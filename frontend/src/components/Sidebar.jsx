@@ -52,8 +52,7 @@ const Sidebar = () => {
                     id: 'activity',
                     path: '/activity',
                     icon: <Activity size={20} />,
-                    label: 'Activity',
-                    expandable: true
+                    label: 'Activity'
                 },
                 {
                     id: 'task',

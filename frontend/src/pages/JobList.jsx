@@ -90,6 +90,55 @@ const JobList = () => {
         return 'Just now';
     };
 
+    const handlePostJob = async () => {
+        try {
+            // Validate required fields
+            if (!jobFormData.title || !jobFormData.description || !jobFormData.requiredSkills ||
+                !jobFormData.budgetMin || !jobFormData.budgetMax) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Prepare job data
+            const jobData = {
+                title: jobFormData.title,
+                description: jobFormData.description,
+                requiredSkills: jobFormData.requiredSkills.split(',').map(skill => skill.trim()),
+                budget: {
+                    min: parseInt(jobFormData.budgetMin),
+                    max: parseInt(jobFormData.budgetMax)
+                },
+                locationPreference: jobFormData.locationPreference || 'Remote',
+                duration: jobFormData.duration || 'Not specified',
+                jobType: jobFormData.jobType
+            };
+
+            // Submit to API
+            await jobsAPI.create(jobData);
+
+            // Reset form and close modal
+            setJobFormData({
+                title: '',
+                description: '',
+                requiredSkills: '',
+                budgetMin: '',
+                budgetMax: '',
+                locationPreference: '',
+                duration: '',
+                jobType: 'freelance'
+            });
+            setShowJobModal(false);
+
+            // Refresh job list
+            fetchJobs();
+
+            alert('Job posted successfully!');
+        } catch (error) {
+            console.error('Error posting job:', error);
+            alert(error.response?.data?.message || 'Failed to post job. Please try again.');
+        }
+    };
+
     if (loading) {
         return <Loader fullScreen />;
     }
