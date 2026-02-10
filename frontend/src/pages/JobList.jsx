@@ -24,6 +24,8 @@ const JobList = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [showJobModal, setShowJobModal] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
+    const [recognition, setRecognition] = useState(null);
+    const [transcript, setTranscript] = useState('');
     const [jobFormData, setJobFormData] = useState({
         title: '',
         description: '',
@@ -37,6 +39,51 @@ const JobList = () => {
 
     useEffect(() => {
         fetchJobs();
+
+        // Initialize speech recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognitionInstance = new SpeechRecognition();
+            recognitionInstance.continuous = true;
+            recognitionInstance.interimResults = true;
+            recognitionInstance.lang = 'en-US';
+
+            recognitionInstance.onresult = (event) => {
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                if (finalTranscript) {
+                    setTranscript(prev => prev + finalTranscript);
+                    // Auto-fill description with transcript
+                    setJobFormData(prev => ({
+                        ...prev,
+                        description: prev.description + finalTranscript
+                    }));
+                }
+            };
+
+            recognitionInstance.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                setIsRecording(false);
+            };
+
+            recognitionInstance.onend = () => {
+                if (isRecording) {
+                    recognitionInstance.start();
+                }
+            };
+
+            setRecognition(recognitionInstance);
+        }
     }, []);
 
     const fetchJobs = async () => {
@@ -136,6 +183,22 @@ const JobList = () => {
         } catch (error) {
             console.error('Error posting job:', error);
             alert(error.response?.data?.message || 'Failed to post job. Please try again.');
+        }
+    };
+
+    const toggleRecording = () => {
+        if (!recognition) {
+            alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
+            return;
+        }
+
+        if (isRecording) {
+            recognition.stop();
+            setIsRecording(false);
+        } else {
+            setTranscript('');
+            recognition.start();
+            setIsRecording(true);
         }
     };
 
@@ -352,7 +415,8 @@ const JobList = () => {
                             <div className="voice-input-section">
                                 <button
                                     className={`voice-record-btn ${isRecording ? 'recording' : ''}`}
-                                    onClick={() => setIsRecording(!isRecording)}
+                                    onClick={toggleRecording}
+                                    type="button"
                                 >
                                     {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
                                     {isRecording ? 'Stop Recording' : 'Record Job Details'}
