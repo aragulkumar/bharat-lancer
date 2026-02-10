@@ -315,11 +315,12 @@
 
 .theme-toggle {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 10px;
     padding: 0.25rem;
     gap: 0.25rem;
+    width: 100%;
 }
 
 [data-theme="light"] .theme-toggle {
@@ -332,7 +333,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.625rem 0.75rem;
+    padding: 0.625rem 0.5rem;
     background: transparent;
     border: none;
     color: #6B7280;
@@ -342,7 +343,11 @@
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
-    min-height: 36px;
+    min-height: 38px;
+}
+
+.theme-option span {
+    display: inline-block;
 }
 
 .theme-option:hover {
