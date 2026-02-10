@@ -57,7 +57,7 @@ const Register = () => {
             <div className="auth-content">
                 <Card className="auth-card">
                     <div className="auth-header">
-                        <h1 className="gradient-text">Join Bharat Lancer</h1>
+                        <h1 className="gradient-text">Join Bharathlancers</h1>
                         <p>Create your account and start working</p>
                     </div>
 

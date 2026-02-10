@@ -132,8 +132,8 @@ const Sidebar = () => {
             {/* Sidebar Header */}
             <div className="sidebar-header">
                 <div className="sidebar-brand">
-                    <div className="brand-icon">BL</div>
-                    {!collapsed && <span className="brand-text">Bharat Lancer</span>}
+                    <img src="/assets/logo.png" alt="Bharathlancers" className="brand-logo" />
+                    {!collapsed && <span className="brand-text">Bharathlancers</span>}
                 </div>
                 <button
                     className="collapse-toggle"

@@ -36,7 +36,7 @@ const Login = () => {
                 <Card className="auth-card">
                     <div className="auth-header">
                         <h1 className="gradient-text">Welcome Back</h1>
-                        <p>Login to your Bharat Lancer account</p>
+                        <p>Login to your Bharathlancers account</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="auth-form">

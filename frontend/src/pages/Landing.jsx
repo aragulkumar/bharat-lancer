@@ -10,7 +10,7 @@ const Landing = () => {
                 <div className="nav-container">
                     <Link to="/" className="nav-logo">
                         <div className="logo-icon">C</div>
-                        <span>Bharat Lancer</span>
+                        <span>Bharathlancers</span>
                     </Link>
 
                     <div className="nav-links">
@@ -67,7 +67,7 @@ const Landing = () => {
                         </div>
                         <div className="testimonial-content">
                             <p className="testimonial-text">
-                                "Bharat Lancer transformed my freelancing career. I went from struggling to find clients to working with top companies across India. The platform's AI matching helped me find projects that perfectly matched my skills, and I've tripled my income in just 6 months."
+                                "Bharathlancers transformed my freelancing career. I went from struggling to find clients to working with top companies across India. The platform's AI matching helped me find projects that perfectly matched my skills, and I've tripled my income in just 6 months."
                             </p>
                             <p className="testimonial-author">— Priya Sharma, Full-Stack Developer</p>
                         </div>
@@ -131,7 +131,7 @@ const Landing = () => {
 
                     {/* Featured Benefits */}
                     <section className="featured-section">
-                        <h2 className="section-title">Why Choose Bharat Lancer?</h2>
+                        <h2 className="section-title">Why Choose Bharathlancers?</h2>
 
                         <div className="featured-grid">
                             <div className="featured-card">
@@ -176,7 +176,7 @@ const Landing = () => {
                         </div>
                         <div className="testimonial-content">
                             <p className="testimonial-text">
-                                "As a startup founder, finding reliable developers was always a challenge. Bharat Lancer's AI matching connected us with amazing talent in hours, not weeks. We've built our entire tech team through this platform, and the quality has been outstanding. It's been a game-changer for our business."
+                                "As a startup founder, finding reliable developers was always a challenge. Bharathlancers' AI matching connected us with amazing talent in hours, not weeks. We've built our entire tech team through this platform, and the quality has been outstanding. It's been a game-changer for our business."
                             </p>
                             <p className="testimonial-author">— Rajesh Kumar, Founder & CEO at TechStart India</p>
                         </div>
@@ -227,7 +227,7 @@ const Landing = () => {
                         </div>
 
                         <div className="footer-bottom">
-                            <p>© 2026 Bharat Lancer. All rights reserved.</p>
+                            <p>© 2026 Bharathlancers. All rights reserved.</p>
                             <div className="footer-links">
                                 <a href="#">Privacy Policy</a>
                                 <a href="#">Terms of Service</a>
