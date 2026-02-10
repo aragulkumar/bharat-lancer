@@ -100,4 +100,9 @@ export const aiAPI = {
   voiceToJob: (data) => api.post('/ai/voice-to-job', data)
 };
 
+// Gemini AI API
+export const geminiAPI = {
+  parseJob: (transcript) => api.post('/gemini/parse-job', { transcript })
+};
+
 export default api;
