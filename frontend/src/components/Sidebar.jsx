@@ -214,15 +214,15 @@ const Sidebar = () => {
                             className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
                             onClick={() => theme !== 'dark' && toggleTheme()}
                         >
-                            <Moon size={16} />
-                            <span>Dark</span>
+                            <Moon size={14} />
+                            Dark
                         </button>
                         <button
                             className={`theme-option ${theme === 'light' ? 'active' : ''}`}
                             onClick={() => theme !== 'light' && toggleTheme()}
                         >
-                            <Sun size={16} />
-                            <span>Light</span>
+                            <Sun size={14} />
+                            Light
                         </button>
                     </div>
                 </div>
