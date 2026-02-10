@@ -31,32 +31,32 @@ const Landing = () => {
                 <div className="main-container">
                     {/* Hero Section */}
                     <section className="hero-section">
-                        <h1 className="hero-title">Ready to build<br />something awesome?</h1>
-                        <p className="hero-subtitle">We make learning to code accessible to anyone, anywhere.</p>
+                        <h1 className="hero-title">Find the perfect<br />freelancer or job</h1>
+                        <p className="hero-subtitle">Connect with top Indian talent or discover your next opportunity.</p>
 
                         <div className="search-box">
                             <Search className="search-icon" size={20} />
                             <input
                                 type="text"
-                                placeholder="What do you want to learn?"
+                                placeholder="Search for jobs or freelancers..."
                                 className="search-input"
                             />
                         </div>
                     </section>
 
-                    {/* Practical Projects Section */}
+                    {/* Opportunities Section */}
                     <section className="projects-section">
                         <div className="section-header">
                             <div>
-                                <h2 className="section-title">Practical projects to get you ahead.</h2>
+                                <h2 className="section-title">Thousands of opportunities waiting for you.</h2>
                                 <p className="section-text">
-                                    Learn by doing with our guided projects. Build real-world applications and gain practical experience.
+                                    Browse projects from startups to enterprises. Find work that matches your skills and grow your career.
                                 </p>
                             </div>
-                            <button className="btn-primary">
-                                <Users size={18} />
-                                Browse Library
-                            </button>
+                            <Link to="/jobs" className="btn-primary">
+                                <Briefcase size={18} />
+                                Browse Jobs
+                            </Link>
                         </div>
                     </section>
 
@@ -67,9 +67,9 @@ const Landing = () => {
                         </div>
                         <div className="testimonial-content">
                             <p className="testimonial-text">
-                                "My career trajectory changed the moment I created a Codecademy account. I went from zero to employed as a full-stack engineer in 6 months. The hands-on learning approach and supportive community made all the difference in my journey."
+                                "Bharat Lancer transformed my freelancing career. I went from struggling to find clients to working with top companies across India. The platform's AI matching helped me find projects that perfectly matched my skills, and I've tripled my income in just 6 months."
                             </p>
-                            <p className="testimonial-author">— Sarah Chen, Full-Stack Developer</p>
+                            <p className="testimonial-author">— Priya Sharma, Full-Stack Developer</p>
                         </div>
                     </div>
 
@@ -84,36 +84,36 @@ const Landing = () => {
 
                         <div className="content-grid">
                             <div className="content-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">Super Fast Data Hosting</h3>
+                                <span className="card-badge">FEATURE</span>
+                                <h3 className="card-title">AI-Powered Matching</h3>
                                 <p className="card-description">
-                                    Learn how to optimize your database queries and improve application performance with modern hosting solutions.
+                                    Our intelligent algorithm matches freelancers with the perfect projects based on skills, experience, and preferences.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/jobs" className="card-btn">
+                                    Explore Jobs <ArrowRight size={16} />
+                                </Link>
                             </div>
 
                             <div className="content-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">API Requests with Axios</h3>
+                                <span className="card-badge">FEATURE</span>
+                                <h3 className="card-title">Skill Passport</h3>
                                 <p className="card-description">
-                                    Master the art of making HTTP requests in JavaScript using Axios library for seamless API integration.
+                                    Showcase your expertise with our comprehensive skill verification system. Build trust with employers instantly.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/register" className="card-btn">
+                                    Create Profile <ArrowRight size={16} />
+                                </Link>
                             </div>
 
                             <div className="content-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">Build a REST API</h3>
+                                <span className="card-badge">FEATURE</span>
+                                <h3 className="card-title">Secure Payments</h3>
                                 <p className="card-description">
-                                    Create robust and scalable REST APIs using Node.js and Express. Learn best practices and security.
+                                    Get paid on time with our integrated payment system. Milestone-based payments ensure security for both parties.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/register" className="card-btn">
+                                    Learn More <ArrowRight size={16} />
+                                </Link>
                             </div>
                         </div>
                     </section>
@@ -121,50 +121,50 @@ const Landing = () => {
                     {/* CTA Banner */}
                     <section className="cta-banner">
                         <div className="cta-content">
-                            <h2 className="cta-title">Unlimited access<br />to everything with<br />pro membership.</h2>
+                            <h2 className="cta-title">Unlock premium<br />features with<br />Pro membership.</h2>
                             <p className="cta-text">
-                                Get unlimited access to all courses, projects, and career resources. Start learning today.
+                                Get priority matching, featured profile, advanced analytics, and unlimited proposals. Grow your business faster.
                             </p>
                         </div>
-                        <button className="cta-button">Start Free Trial</button>
+                        <Link to="/register" className="cta-button">Start Free Trial</Link>
                     </section>
 
-                    {/* Featured Content */}
+                    {/* Featured Benefits */}
                     <section className="featured-section">
-                        <h2 className="section-title">Featured Content</h2>
+                        <h2 className="section-title">Why Choose Bharat Lancer?</h2>
 
                         <div className="featured-grid">
                             <div className="featured-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">Super Fast Data Hosting</h3>
+                                <span className="card-badge">FOR FREELANCERS</span>
+                                <h3 className="card-title">Find Quality Projects</h3>
                                 <p className="card-description">
-                                    Discover the latest techniques in cloud hosting and database optimization for lightning-fast applications.
+                                    Access thousands of verified projects from startups to Fortune 500 companies. Work on your terms with flexible schedules.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/jobs" className="card-btn">
+                                    Browse Jobs <ArrowRight size={16} />
+                                </Link>
                             </div>
 
                             <div className="featured-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">AI-powered platforms</h3>
+                                <span className="card-badge">FOR EMPLOYERS</span>
+                                <h3 className="card-title">Hire Top Talent</h3>
                                 <p className="card-description">
-                                    Explore how artificial intelligence is transforming modern web development and user experiences.
+                                    Connect with pre-vetted Indian freelancers. Our AI matching ensures you find the perfect fit for your project needs.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/register" className="card-btn">
+                                    Post a Job <ArrowRight size={16} />
+                                </Link>
                             </div>
 
                             <div className="featured-card">
-                                <span className="card-badge">ARTICLE</span>
-                                <h3 className="card-title">Practical Pair Components</h3>
+                                <span className="card-badge">PLATFORM</span>
+                                <h3 className="card-title">Secure & Reliable</h3>
                                 <p className="card-description">
-                                    Learn component-driven development and build reusable UI elements for scalable applications.
+                                    Milestone-based payments, dispute resolution, and 24/7 support. Your success and security are our top priorities.
                                 </p>
-                                <button className="card-btn">
-                                    Read More <ArrowRight size={16} />
-                                </button>
+                                <Link to="/register" className="card-btn">
+                                    Get Started <ArrowRight size={16} />
+                                </Link>
                             </div>
                         </div>
                     </section>
@@ -176,9 +176,9 @@ const Landing = () => {
                         </div>
                         <div className="testimonial-content">
                             <p className="testimonial-text">
-                                "I credit Codecademy for the skills I have today. I went from a complete beginner to landing my dream job as a software engineer. The structured learning path and hands-on projects gave me the confidence to pursue a career in tech. The community support was invaluable throughout my journey."
+                                "As a startup founder, finding reliable developers was always a challenge. Bharat Lancer's AI matching connected us with amazing talent in hours, not weeks. We've built our entire tech team through this platform, and the quality has been outstanding. It's been a game-changer for our business."
                             </p>
-                            <p className="testimonial-author">— Michael Rodriguez, Software Engineer</p>
+                            <p className="testimonial-author">— Rajesh Kumar, Founder & CEO at TechStart India</p>
                         </div>
                     </div>
 
@@ -186,43 +186,43 @@ const Landing = () => {
                     <footer className="landing-footer">
                         <div className="footer-grid">
                             <div className="footer-column">
-                                <h4>Library</h4>
-                                <a href="#">Courses</a>
-                                <a href="#">Projects</a>
-                                <a href="#">Paths</a>
-                                <a href="#">Docs</a>
+                                <h4>For Freelancers</h4>
+                                <Link to="/jobs">Find Jobs</Link>
+                                <Link to="/skill-passport">Skill Passport</Link>
+                                <Link to="/register">Create Profile</Link>
+                                <a href="#">Success Stories</a>
                             </div>
 
                             <div className="footer-column">
-                                <h4>Support</h4>
-                                <a href="#">Help Center</a>
-                                <a href="#">Contact Us</a>
-                                <a href="#">Community</a>
-                                <a href="#">Blog</a>
-                            </div>
-
-                            <div className="footer-column">
-                                <h4>Teams</h4>
-                                <a href="#">For Business</a>
-                                <a href="#">For Education</a>
-                                <a href="#">Enterprise</a>
+                                <h4>For Employers</h4>
+                                <Link to="/create-job">Post a Job</Link>
+                                <Link to="/jobs">Browse Talent</Link>
                                 <a href="#">Pricing</a>
+                                <a href="#">Enterprise</a>
+                            </div>
+
+                            <div className="footer-column">
+                                <h4>Resources</h4>
+                                <a href="#">Help Center</a>
+                                <a href="#">Blog</a>
+                                <a href="#">Guides</a>
+                                <a href="#">API Docs</a>
                             </div>
 
                             <div className="footer-column">
                                 <h4>Company</h4>
-                                <a href="#">About</a>
+                                <a href="#">About Us</a>
                                 <a href="#">Careers</a>
                                 <a href="#">Press</a>
-                                <a href="#">Partners</a>
+                                <a href="#">Contact</a>
                             </div>
 
                             <div className="footer-column">
-                                <h4>Community & Support</h4>
-                                <a href="#">Forums</a>
-                                <a href="#">Discord</a>
+                                <h4>Community</h4>
+                                <Link to="/chat">Community Chat</Link>
                                 <a href="#">Events</a>
                                 <a href="#">Newsletter</a>
+                                <a href="#">Support</a>
                             </div>
                         </div>
 
