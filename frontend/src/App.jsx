@@ -59,10 +59,7 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={
-        user ? <Navigate to="/jobs" replace /> :
-          <PublicLayout><Landing /></PublicLayout>
-      } />
+      <Route path="/" element={<PublicLayout><Landing /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
       <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
 
