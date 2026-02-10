@@ -1,0 +1,23 @@
+/* Processing text animation */
+.processing-text {
+    color: #4F46E5;
+    font-weight: 600;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.voice-record-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}

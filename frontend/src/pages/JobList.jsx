@@ -9,6 +9,7 @@ import {
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import './JobList.css';
+import './VoiceProcessing.css';
 
 const JobList = () => {
     const { isEmployer } = useAuth();
@@ -271,6 +272,7 @@ const JobList = () => {
 
             // Parse the transcript using Gemini AI
             if (transcript.trim()) {
+                setIsProcessing(true); // Show loading indicator
                 try {
                     const response = await geminiAPI.parseJob(transcript);
                     const parsedData = response.data.data;
@@ -289,8 +291,10 @@ const JobList = () => {
                         duration: parsedData.duration || prev.duration,
                         jobType: parsedData.jobType || prev.jobType
                     }));
+                    setIsProcessing(false); // Hide loading
                 } catch (error) {
                     console.error('Error parsing with Gemini:', error);
+                    setIsProcessing(false); // Hide loading
                     // Fallback to local parsing if API fails
                     const parsedData = parseJobFromTranscript(transcript);
                     setJobFormData(prev => ({
@@ -527,14 +531,21 @@ const JobList = () => {
                                     className={`voice-record-btn ${isRecording ? 'recording' : ''}`}
                                     onClick={toggleRecording}
                                     type="button"
+                                    disabled={isProcessing}
                                 >
                                     {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
                                     {isRecording ? 'Stop Recording' : 'Record Job Details'}
                                 </button>
                                 <p className="voice-hint">
-                                    {isRecording
-                                        ? 'Speak clearly about the job requirements...'
-                                        : 'Click to record job details using your voice'}
+                                    {isProcessing ? (
+                                        <span className="processing-text">
+                                            🤖 AI is translating and extracting job details...
+                                        </span>
+                                    ) : isRecording ? (
+                                        'Speak clearly about the job requirements...'
+                                    ) : (
+                                        'Click to record job details using your voice'
+                                    )}
                                 </p>
                             </div>
 
