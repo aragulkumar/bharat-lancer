@@ -50,7 +50,7 @@ exports.createJob = async (req, res) => {
     // Find and notify matching freelancers
     try {
       const matches = await matchingService.findBestMatches(job, 10);
-      
+
       // Send notifications to top 5 matches
       for (const match of matches.slice(0, 5)) {
         await notificationService.sendSkillMatchNotification(match.freelancer, job);
@@ -181,13 +181,13 @@ exports.getJobMatches = async (req, res) => {
     res.status(200).json({
       status: 'success',
       results: matches.length,
-      data: { 
+      data: {
         job: {
           id: job._id,
           title: job.title,
           requiredSkills: job.requiredSkills
         },
-        matches 
+        matches
       }
     });
   } catch (error) {
@@ -221,9 +221,9 @@ exports.updateJob = async (req, res) => {
       });
     }
 
-    const allowedUpdates = ['title', 'description', 'requiredSkills', 'budget', 
-                           'locationPreference', 'duration', 'status', 'deadline'];
-    
+    const allowedUpdates = ['title', 'description', 'requiredSkills', 'budget',
+      'locationPreference', 'duration', 'status', 'deadline'];
+
     const updates = {};
     Object.keys(req.body).forEach(key => {
       if (allowedUpdates.includes(key)) {
@@ -304,10 +304,10 @@ exports.createVoiceJob = async (req, res) => {
 
     // Parse job from transcript
     const parsedJob = voiceService.parseJobFromText(transcript);
-    
+
     // Validate parsed data
     const validation = voiceService.validateParsedJob(parsedJob);
-    
+
     // Generate suggestions
     const suggestions = voiceService.generateSuggestions(transcript);
 
@@ -326,7 +326,7 @@ exports.createVoiceJob = async (req, res) => {
     res.status(201).json({
       status: 'success',
       message: 'Job created from voice input successfully',
-      data: { 
+      data: {
         job,
         validation,
         suggestions,
@@ -408,7 +408,7 @@ exports.applyForJob = async (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'Application submitted successfully',
-      data: { 
+      data: {
         jobId: job._id,
         jobTitle: job.title
       }
@@ -572,8 +572,8 @@ exports.updateApplicationStatus = async (req, res) => {
     const freelancer = job.applications.id(applicationId).freelancer;
 
     // Send notification to freelancer
-    const notificationTitle = status === 'accepted' 
-      ? 'Application Accepted!' 
+    const notificationTitle = status === 'accepted'
+      ? 'Application Accepted!'
       : 'Application Update';
     const notificationMessage = status === 'accepted'
       ? `Your application for "${job.title}" has been accepted!`
@@ -658,8 +658,8 @@ exports.updateApplicationStatus = async (req, res) => {
     const freelancer = job.applications.id(applicationId).freelancer;
 
     // Send notification to freelancer
-    const notificationTitle = status === 'accepted' 
-      ? 'Application Accepted!' 
+    const notificationTitle = status === 'accepted'
+      ? 'Application Accepted!'
       : 'Application Update';
     const notificationMessage = status === 'accepted'
       ? `Your application for "${job.title}" has been accepted!`
@@ -685,6 +685,100 @@ exports.updateApplicationStatus = async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: error.message || 'Error updating application status'
+    });
+  }
+};
+
+/**
+ * Apply for a job (Freelancer only)
+ */
+exports.applyForJob = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { coverLetter, proposedRate, estimatedDuration } = req.body;
+    const freelancerId = req.user.id;
+
+    // Validation
+    if (!coverLetter || !proposedRate) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Please provide cover letter and proposed rate'
+      });
+    }
+
+    // Get the job
+    const job = await Job.findById(id);
+    if (!job) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Job not found'
+      });
+    }
+
+    // Check if job is still open
+    if (job.status !== 'open') {
+      return res.status(400).json({
+        status: 'error',
+        message: 'This job is no longer accepting applications'
+      });
+    }
+
+    // Check if user is the employer
+    if (job.employer.toString() === freelancerId) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'You cannot apply to your own job'
+      });
+    }
+
+    // Check if already applied
+    const existingApplication = job.applications.find(
+      app => app.freelancer.toString() === freelancerId
+    );
+
+    if (existingApplication) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'You have already applied to this job'
+      });
+    }
+
+    // Add application
+    job.applications.push({
+      freelancer: freelancerId,
+      coverLetter,
+      proposedRate: Number(proposedRate),
+      estimatedDuration,
+      status: 'pending'
+    });
+
+    await job.save();
+
+    // Populate freelancer details
+    await job.populate('applications.freelancer', 'name email skills');
+    const application = job.applications[job.applications.length - 1];
+
+    // Send notification to employer
+    await notificationService.createNotification(
+      job.employer,
+      'application',
+      'New Job Application',
+      `${req.user.name} applied for "${job.title}"`,
+      { jobId: job._id, applicationId: application._id }
+    );
+
+    console.log('Job application submitted successfully');
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Application submitted successfully',
+      data: { application }
+    });
+  } catch (error) {
+    console.error('Apply for job error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error submitting application'
     });
   }
 };
