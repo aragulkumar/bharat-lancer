@@ -62,12 +62,8 @@ const JobList = () => {
                 }
 
                 if (finalTranscript) {
+                    // Just accumulate transcript, don't auto-fill yet
                     setTranscript(prev => prev + finalTranscript);
-                    // Auto-fill description with transcript
-                    setJobFormData(prev => ({
-                        ...prev,
-                        description: prev.description + finalTranscript
-                    }));
                 }
             };
 
@@ -186,6 +182,82 @@ const JobList = () => {
         }
     };
 
+    const parseJobFromTranscript = (text) => {
+        // Simple AI-like parsing using keywords and patterns
+        const lowerText = text.toLowerCase();
+
+        // Extract job title (look for common patterns)
+        let title = '';
+        const titlePatterns = [
+            /(?:need|looking for|hiring|want)\s+(?:a\s+)?([^.]+?)(?:\s+for|\s+to|\s+with|\.)/i,
+            /(?:job title is|position is|role is)\s+([^.]+)/i,
+            /([^.]+?)\s+(?:developer|designer|engineer|manager|specialist)/i
+        ];
+
+        for (const pattern of titlePatterns) {
+            const match = text.match(pattern);
+            if (match && match[1]) {
+                title = match[1].trim();
+                break;
+            }
+        }
+
+        // Extract skills (look for technical keywords)
+        const skillKeywords = ['python', 'javascript', 'react', 'node', 'java', 'css', 'html', 'sql', 'mongodb', 'aws', 'docker', 'kubernetes', 'typescript', 'angular', 'vue', 'django', 'flask', 'express', 'postgresql', 'redis', 'git', 'figma', 'photoshop', 'ui', 'ux'];
+        const foundSkills = [];
+        skillKeywords.forEach(skill => {
+            if (lowerText.includes(skill)) {
+                foundSkills.push(skill.charAt(0).toUpperCase() + skill.slice(1));
+            }
+        });
+
+        // Extract budget (look for numbers and currency)
+        let budgetMin = '';
+        let budgetMax = '';
+        const budgetPatterns = [
+            /(\d+)k?\s*(?:to|-)\s*(\d+)k?/i,
+            /budget.*?(\d+).*?(\d+)/i,
+            /(\d{4,})\s*(?:to|-)\s*(\d{4,})/
+        ];
+
+        for (const pattern of budgetPatterns) {
+            const match = text.match(pattern);
+            if (match) {
+                budgetMin = match[1].includes('k') ? match[1].replace('k', '000') : match[1];
+                budgetMax = match[2].includes('k') ? match[2].replace('k', '000') : match[2];
+                break;
+            }
+        }
+
+        // Extract location
+        let location = '';
+        if (lowerText.includes('remote')) {
+            location = 'Remote';
+        } else {
+            const locationMatch = text.match(/(?:in|from|location)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/);
+            if (locationMatch) {
+                location = locationMatch[1];
+            }
+        }
+
+        // Extract duration
+        let duration = '';
+        const durationMatch = text.match(/(\d+)\s*(?:month|week|day)s?/i);
+        if (durationMatch) {
+            duration = durationMatch[0];
+        }
+
+        return {
+            title: title || '',
+            description: text,
+            requiredSkills: foundSkills.join(', '),
+            budgetMin,
+            budgetMax,
+            locationPreference: location,
+            duration
+        };
+    };
+
     const toggleRecording = () => {
         if (!recognition) {
             alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
@@ -195,6 +267,21 @@ const JobList = () => {
         if (isRecording) {
             recognition.stop();
             setIsRecording(false);
+
+            // Parse the transcript and fill form fields
+            if (transcript.trim()) {
+                const parsedData = parseJobFromTranscript(transcript);
+                setJobFormData(prev => ({
+                    ...prev,
+                    title: parsedData.title || prev.title,
+                    description: parsedData.description || prev.description,
+                    requiredSkills: parsedData.requiredSkills || prev.requiredSkills,
+                    budgetMin: parsedData.budgetMin || prev.budgetMin,
+                    budgetMax: parsedData.budgetMax || prev.budgetMax,
+                    locationPreference: parsedData.locationPreference || prev.locationPreference,
+                    duration: parsedData.duration || prev.duration
+                }));
+            }
         } else {
             setTranscript('');
             recognition.start();
