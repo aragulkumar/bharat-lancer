@@ -209,20 +209,22 @@ const Sidebar = () => {
             {/* Theme Switcher */}
             {!collapsed && (
                 <div className="theme-switcher">
-                    <button
-                        className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
-                        onClick={() => theme !== 'dark' && toggleTheme()}
-                    >
-                        <Moon size={16} />
-                        <span>Dark</span>
-                    </button>
-                    <button
-                        className={`theme-option ${theme === 'light' ? 'active' : ''}`}
-                        onClick={() => theme !== 'light' && toggleTheme()}
-                    >
-                        <Sun size={16} />
-                        <span>Light</span>
-                    </button>
+                    <div className="theme-toggle">
+                        <button
+                            className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
+                            onClick={() => theme !== 'dark' && toggleTheme()}
+                        >
+                            <Moon size={16} />
+                            <span>Dark</span>
+                        </button>
+                        <button
+                            className={`theme-option ${theme === 'light' ? 'active' : ''}`}
+                            onClick={() => theme !== 'light' && toggleTheme()}
+                        >
+                            <Sun size={16} />
+                            <span>Light</span>
+                        </button>
+                    </div>
                 </div>
             )}
 
