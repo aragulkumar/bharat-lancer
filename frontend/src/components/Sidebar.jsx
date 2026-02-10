@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import {
     Home, Activity, CheckSquare, Users as UsersIcon, Bell,
     Settings, FileText, HelpCircle, Radio, Zap, Network,
-    ChevronLeft, ChevronRight, Moon, Sun, MoreHorizontal, LogOut, User
+    ChevronLeft, ChevronRight, ChevronDown, Moon, Sun, MoreHorizontal, LogOut, User
 } from 'lucide-react';
 import './Sidebar.css';
 
