@@ -1,35 +1,27 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import {
-    Home,
-    Activity,
-    CheckSquare,
-    Users,
-    Bell,
-    Settings,
-    FileText,
-    HelpCircle,
-    Radio,
-    Zap,
-    Network,
-    Sun,
-    Moon,
-    ChevronDown,
-    ChevronRight,
-    ChevronLeft,
-    MoreHorizontal,
-    Search
+    Home, Activity, CheckSquare, Users as UsersIcon, Bell,
+    Settings, FileText, HelpCircle, Radio, Zap, Network,
+    ChevronLeft, ChevronRight, Moon, Sun, MoreHorizontal, LogOut, User
 } from 'lucide-react';
 import './Sidebar.css';
 
+/**
+ * Sidebar Component
+ * Main navigation sidebar with collapsible menu
+ */
+
 const Sidebar = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const { user, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
-    const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
     const [expandedItems, setExpandedItems] = useState(['activity']);
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
 
     const handleLogout = () => {
         logout();
