@@ -66,6 +66,9 @@ const Users = () => {
 
         setMessages([...messages, message]);
         setNewMessage('');
+
+        // In production, this would call the API:
+        // await chatAPI.sendMessage({ receiverId: selectedUser.id, content: newMessage });
     };
 
     const filteredUsers = users.filter(user =>
