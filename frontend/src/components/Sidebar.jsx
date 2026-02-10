@@ -91,6 +91,16 @@ const Sidebar = () => {
                     </button>
                 </div>
 
+                {/* Search Bar */}
+                {!collapsed && (
+                    <div className="sidebar-search">
+                        <input type="text" placeholder="Search..." />
+                    </div>
+                )}
+
+                {/* Menu Label */}
+                {!collapsed && <div className="menu-label">MENU</div>}
+
                 {/* User Profile */}
                 <div className="sidebar-user">
                     <div className="user-avatar">
