@@ -52,11 +52,23 @@
     flex: 1;
 }
 
-.brand-logo {
+.brand-logo-icon {
     width: 40px;
     height: 40px;
-    object-fit: contain;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #FF9933, #138808);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(255, 153, 51, 0.3);
+}
+
+.logo-gradient {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .brand-text {

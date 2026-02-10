@@ -132,7 +132,9 @@ const Sidebar = () => {
             {/* Sidebar Header */}
             <div className="sidebar-header">
                 <div className="sidebar-brand">
-                    <img src="/assets/logo.png" alt="Bharathlancers" className="brand-logo" />
+                    <div className="brand-logo-icon">
+                        <span className="logo-gradient">B</span>
+                    </div>
                     {!collapsed && <span className="brand-text">Bharathlancers</span>}
                 </div>
                 <button
