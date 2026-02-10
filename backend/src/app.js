@@ -25,7 +25,7 @@ connectDB();
 
 // Health Check Route
 app.get('/ping', (req, res) => {
-  res.status(200).json({ 
+  res.status(200).json({
     status: 'success',
     message: 'Bharat Lancer API is running!',
     timestamp: new Date().toISOString()
@@ -34,7 +34,7 @@ app.get('/ping', (req, res) => {
 
 // Root Route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Welcome to Bharat Lancer API',
     version: '1.0.0',
     endpoints: {
@@ -51,7 +51,6 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
-const applicationRoutes = require('./routes/applicationRoutes'); // Added applicationRoutes
 const chatRoutes = require('./routes/chatRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const notificationRoutes = require('./routes/notifications');
@@ -61,10 +60,9 @@ const geminiRoutes = require('./routes/gemini');
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/jobs', jobRoutes);
-app.use('/api/applications', applicationRoutes); // Added applicationRoutes usage
 app.use('/api/chat', chatRoutes);
 app.use('/api/payments', paymentRoutes);
-app.use('/api/gemini', geminiRoutes); // Added geminiRoutes usage
+app.use('/api/gemini', geminiRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/ai', aiRoutes);
 
@@ -74,7 +72,7 @@ app.use('/api/ai', aiRoutes);
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     status: 'error',
     message: err.message || 'Something went wrong!'
   });

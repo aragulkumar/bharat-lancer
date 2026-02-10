@@ -48,7 +48,7 @@ const JobList = () => {
             const recognitionInstance = new SpeechRecognition();
             recognitionInstance.continuous = true;
             recognitionInstance.interimResults = true;
-            recognitionInstance.lang = 'en-IN'; // Indian English - supports both English and Tamil
+            recognitionInstance.lang = 'ta-IN'; // Tamil language - Gemini will translate to English
 
             recognitionInstance.onresult = (event) => {
                 let interimTranscript = '';
