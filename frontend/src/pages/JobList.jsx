@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { jobsAPI } from '../services/api';
+import { jobsAPI, geminiAPI } from '../services/api';
 import {
     Briefcase, MapPin, DollarSign, Clock, Search,
     Filter, Plus, TrendingUp, Star, Users, X, Mic, MicOff
@@ -258,7 +258,7 @@ const JobList = () => {
         };
     };
 
-    const toggleRecording = () => {
+    const toggleRecording = async () => {
         if (!recognition) {
             alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
             return;
@@ -268,19 +268,41 @@ const JobList = () => {
             recognition.stop();
             setIsRecording(false);
 
-            // Parse the transcript and fill form fields
+            // Parse the transcript using Gemini AI
             if (transcript.trim()) {
-                const parsedData = parseJobFromTranscript(transcript);
-                setJobFormData(prev => ({
-                    ...prev,
-                    title: parsedData.title || prev.title,
-                    description: parsedData.description || prev.description,
-                    requiredSkills: parsedData.requiredSkills || prev.requiredSkills,
-                    budgetMin: parsedData.budgetMin || prev.budgetMin,
-                    budgetMax: parsedData.budgetMax || prev.budgetMax,
-                    locationPreference: parsedData.locationPreference || prev.locationPreference,
-                    duration: parsedData.duration || prev.duration
-                }));
+                try {
+                    const response = await geminiAPI.parseJob(transcript);
+                    const parsedData = response.data.data;
+
+                    // Fill form fields with AI-parsed data
+                    setJobFormData(prev => ({
+                        ...prev,
+                        title: parsedData.title || prev.title,
+                        description: parsedData.description || prev.description,
+                        requiredSkills: Array.isArray(parsedData.requiredSkills)
+                            ? parsedData.requiredSkills.join(', ')
+                            : parsedData.requiredSkills || prev.requiredSkills,
+                        budgetMin: parsedData.budgetMin || prev.budgetMin,
+                        budgetMax: parsedData.budgetMax || prev.budgetMax,
+                        locationPreference: parsedData.locationPreference || prev.locationPreference,
+                        duration: parsedData.duration || prev.duration,
+                        jobType: parsedData.jobType || prev.jobType
+                    }));
+                } catch (error) {
+                    console.error('Error parsing with Gemini:', error);
+                    // Fallback to local parsing if API fails
+                    const parsedData = parseJobFromTranscript(transcript);
+                    setJobFormData(prev => ({
+                        ...prev,
+                        title: parsedData.title || prev.title,
+                        description: parsedData.description || prev.description,
+                        requiredSkills: parsedData.requiredSkills || prev.requiredSkills,
+                        budgetMin: parsedData.budgetMin || prev.budgetMin,
+                        budgetMax: parsedData.budgetMax || prev.budgetMax,
+                        locationPreference: parsedData.locationPreference || prev.locationPreference,
+                        duration: parsedData.duration || prev.duration
+                    }));
+                }
             }
         } else {
             setTranscript('');

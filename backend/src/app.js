@@ -51,20 +51,22 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
+const applicationRoutes = require('./routes/applicationRoutes'); // Added applicationRoutes
 const chatRoutes = require('./routes/chatRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const notificationRoutes = require('./routes/notifications');
 const aiRoutes = require('./routes/aiRoutes');
+const geminiRoutes = require('./routes/geminiRoutes'); // Added geminiRoutes
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes); // Added applicationRoutes usage
 app.use('/api/chat', chatRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/gemini', geminiRoutes); // Added geminiRoutes usage
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/ai', aiRoutes);
-
-
 
 
 
