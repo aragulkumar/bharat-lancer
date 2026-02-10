@@ -22,7 +22,7 @@ import Settings from './pages/Settings';
 import Reports from './pages/Reports';
 import Support from './pages/Support';
 import Channels from './pages/Channels';
-import Autotrack from './pages/Autotrack';
+import AutoMonitor from './pages/AutoMonitor';
 import Networks from './pages/Networks';
 import './App.css';
 
@@ -226,7 +226,7 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <AuthenticatedLayout>
-              <Autotrack />
+              <AutoMonitor />
             </AuthenticatedLayout>
           </ProtectedRoute>
         }

@@ -1,8 +1,8 @@
 import { Zap, Activity, TrendingUp, Clock } from 'lucide-react';
 import Card from '../components/Card';
-import './Autotrack.css';
+import './AutoMonitor.css';
 
-const Autotrack = () => {
+const AutoMonitor = () => {
     const trackingData = [
         { id: 1, activity: 'Job Application Submitted', time: '2 hours ago', status: 'Tracked' },
         { id: 2, activity: 'Profile Updated', time: '5 hours ago', status: 'Tracked' },
@@ -10,7 +10,7 @@ const Autotrack = () => {
     ];
 
     return (
-        <div className="autotrack-page">
+        <div className="automonitor-page">
             <div className="page-header">
                 <div>
                     <h1>Autotrack</h1>
@@ -61,4 +61,4 @@ const Autotrack = () => {
     );
 };
 
-export default Autotrack;
+export default AutoMonitor;
