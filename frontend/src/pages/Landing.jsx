@@ -1,257 +1,242 @@
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import {
-    Briefcase,
-    Users,
-    MessageSquare,
-    TrendingUp,
-    CheckCircle,
-    ArrowRight,
-    Zap,
-    Shield,
-    Globe,
-    Star
-} from 'lucide-react';
-import Button from '../components/Button';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Search, Users, Briefcase, Award, TrendingUp } from 'lucide-react';
 import './Landing.css';
 
 const Landing = () => {
-    const navigate = useNavigate();
-    const { user } = useAuth();
-
-    // Redirect if already logged in
-    if (user) {
-        navigate('/jobs');
-        return null;
-    }
-
-    const features = [
-        {
-            icon: <Zap size={32} />,
-            title: 'AI-Powered Matching',
-            description: 'Our intelligent system matches freelancers with jobs based on skills, experience, and budget.'
-        },
-        {
-            icon: <MessageSquare size={32} />,
-            title: 'Real-Time Chat',
-            description: 'Communicate directly with clients and freelancers through our built-in messaging system.'
-        },
-        {
-            icon: <Shield size={32} />,
-            title: 'Secure Payments',
-            description: 'Safe and secure payment processing with escrow protection for both parties.'
-        },
-        {
-            icon: <Globe size={32} />,
-            title: 'Tamil Voice Support',
-            description: 'Post jobs using voice input in Tamil, making it accessible for everyone.'
-        }
-    ];
-
-    const howItWorks = [
-        {
-            step: '1',
-            title: 'Create Your Profile',
-            description: 'Sign up as an employer or freelancer and complete your profile.'
-        },
-        {
-            step: '2',
-            title: 'Post or Find Jobs',
-            description: 'Employers post jobs, freelancers browse and apply to opportunities.'
-        },
-        {
-            step: '3',
-            title: 'Connect & Collaborate',
-            description: 'Chat, negotiate, and work together to complete projects successfully.'
-        },
-        {
-            step: '4',
-            title: 'Get Paid Securely',
-            description: 'Complete the work and receive payment through our secure platform.'
-        }
-    ];
-
-    const stats = [
-        { value: '10,000+', label: 'Active Users' },
-        { value: '5,000+', label: 'Jobs Posted' },
-        { value: '₹50L+', label: 'Paid to Freelancers' },
-        { value: '4.8/5', label: 'Average Rating' }
-    ];
-
     return (
         <div className="landing-page">
-            {/* Hero Section */}
-            <section className="hero-section">
-                <div className="hero-background">
-                    <div className="gradient-orb orb-1"></div>
-                    <div className="gradient-orb orb-2"></div>
-                    <div className="gradient-orb orb-3"></div>
-                </div>
+            {/* Navbar */}
+            <nav className="landing-nav">
+                <div className="nav-container">
+                    <Link to="/" className="nav-logo">
+                        <div className="logo-icon">C</div>
+                        <span>Bharat Lancer</span>
+                    </Link>
 
-                <div className="container hero-content">
-                    <div className="hero-text">
-                        <h1 className="hero-title">
-                            Find the Perfect
-                            <span className="gradient-text"> Freelancer</span>
-                            <br />
-                            for Your Project
-                        </h1>
-                        <p className="hero-description">
-                            Connect with skilled professionals across India. Post jobs, find talent,
-                            and collaborate seamlessly with AI-powered matching and real-time communication.
-                        </p>
-                        <div className="hero-buttons">
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                onClick={() => navigate('/register')}
-                            >
-                                Get Started Free
-                                <ArrowRight size={20} />
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                size="lg"
-                                onClick={() => navigate('/login')}
-                            >
-                                Sign In
-                            </Button>
-                        </div>
-                        <div className="hero-stats">
-                            {stats.map((stat, index) => (
-                                <div key={index} className="stat-item">
-                                    <div className="stat-value">{stat.value}</div>
-                                    <div className="stat-label">{stat.label}</div>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="nav-links">
+                        <a href="#content">Content</a>
+                        <a href="#subjects">Subjects</a>
+                        <a href="#paths">Paths</a>
                     </div>
-                    <div className="hero-image">
-                        <div className="floating-card card-1">
-                            <Briefcase size={24} />
+
+                    <div className="nav-actions">
+                        <Link to="/login" className="nav-btn-outline">Sign In</Link>
+                        <Link to="/register" className="nav-btn-primary">Sign Up</Link>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Main Content Container */}
+            <div className="content-wrapper">
+                <div className="main-container">
+                    {/* Hero Section */}
+                    <section className="hero-section">
+                        <h1 className="hero-title">Ready to build<br />something awesome?</h1>
+                        <p className="hero-subtitle">We make learning to code accessible to anyone, anywhere.</p>
+
+                        <div className="search-box">
+                            <Search className="search-icon" size={20} />
+                            <input
+                                type="text"
+                                placeholder="What do you want to learn?"
+                                className="search-input"
+                            />
+                        </div>
+                    </section>
+
+                    {/* Practical Projects Section */}
+                    <section className="projects-section">
+                        <div className="section-header">
                             <div>
-                                <div className="card-title">New Job Posted</div>
-                                <div className="card-subtitle">Web Development</div>
+                                <h2 className="section-title">Practical projects to get you ahead.</h2>
+                                <p className="section-text">
+                                    Learn by doing with our guided projects. Build real-world applications and gain practical experience.
+                                </p>
                             </div>
+                            <button className="btn-primary">
+                                <Users size={18} />
+                                Browse Library
+                            </button>
                         </div>
-                        <div className="floating-card card-2">
-                            <Users size={24} />
-                            <div>
-                                <div className="card-title">5 Applicants</div>
-                                <div className="card-subtitle">Matched by AI</div>
-                            </div>
-                        </div>
-                        <div className="floating-card card-3">
-                            <Star size={24} />
-                            <div>
-                                <div className="card-title">4.9 Rating</div>
-                                <div className="card-subtitle">Top Freelancer</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                    </section>
 
-            {/* Features Section */}
-            <section className="features-section">
-                <div className="container">
-                    <div className="section-header">
-                        <h2>Why Choose Bharat Lancer?</h2>
-                        <p>Everything you need to find talent or get hired</p>
-                    </div>
-                    <div className="features-grid">
-                        {features.map((feature, index) => (
-                            <div key={index} className="feature-card">
-                                <div className="feature-icon">{feature.icon}</div>
-                                <h3>{feature.title}</h3>
-                                <p>{feature.description}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* How It Works Section */}
-            <section className="how-it-works-section">
-                <div className="container">
-                    <div className="section-header">
-                        <h2>How It Works</h2>
-                        <p>Get started in 4 simple steps</p>
-                    </div>
-                    <div className="steps-grid">
-                        {howItWorks.map((item, index) => (
-                            <div key={index} className="step-card">
-                                <div className="step-number">{item.step}</div>
-                                <h3>{item.title}</h3>
-                                <p>{item.description}</p>
-                                {index < howItWorks.length - 1 && (
-                                    <ArrowRight className="step-arrow" size={24} />
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="cta-section">
-                <div className="container">
-                    <div className="cta-content">
-                        <h2>Ready to Get Started?</h2>
-                        <p>Join thousands of employers and freelancers already using Bharat Lancer</p>
-                        <div className="cta-buttons">
-                            <Button
-                                variant="primary"
-                                size="lg"
-                                onClick={() => navigate('/register?role=employer')}
-                            >
-                                I'm Hiring
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                size="lg"
-                                onClick={() => navigate('/register?role=freelancer')}
-                            >
-                                I'm a Freelancer
-                            </Button>
+                    {/* Testimonial 1 */}
+                    <div className="testimonial-card">
+                        <div className="testimonial-avatar">
+                            <img src="https://i.pravatar.cc/150?img=12" alt="User" />
+                        </div>
+                        <div className="testimonial-content">
+                            <p className="testimonial-text">
+                                "My career trajectory changed the moment I created a Codecademy account. I went from zero to employed as a full-stack engineer in 6 months. The hands-on learning approach and supportive community made all the difference in my journey."
+                            </p>
+                            <p className="testimonial-author">— Sarah Chen, Full-Stack Developer</p>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            {/* Footer */}
-            <footer className="landing-footer">
-                <div className="container">
-                    <div className="footer-content">
-                        <div className="footer-brand">
-                            <h3>Bharat Lancer</h3>
-                            <p>Connecting talent with opportunity across India</p>
+                    {/* Latest Content */}
+                    <section className="content-section">
+                        <div className="section-top">
+                            <h2 className="section-title">Latest Content</h2>
+                            <a href="#" className="view-all-link">
+                                Browse everything <ArrowRight size={16} />
+                            </a>
                         </div>
-                        <div className="footer-links">
+
+                        <div className="content-grid">
+                            <div className="content-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">Super Fast Data Hosting</h3>
+                                <p className="card-description">
+                                    Learn how to optimize your database queries and improve application performance with modern hosting solutions.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+
+                            <div className="content-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">API Requests with Axios</h3>
+                                <p className="card-description">
+                                    Master the art of making HTTP requests in JavaScript using Axios library for seamless API integration.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+
+                            <div className="content-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">Build a REST API</h3>
+                                <p className="card-description">
+                                    Create robust and scalable REST APIs using Node.js and Express. Learn best practices and security.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* CTA Banner */}
+                    <section className="cta-banner">
+                        <div className="cta-content">
+                            <h2 className="cta-title">Unlimited access<br />to everything with<br />pro membership.</h2>
+                            <p className="cta-text">
+                                Get unlimited access to all courses, projects, and career resources. Start learning today.
+                            </p>
+                        </div>
+                        <button className="cta-button">Start Free Trial</button>
+                    </section>
+
+                    {/* Featured Content */}
+                    <section className="featured-section">
+                        <h2 className="section-title">Featured Content</h2>
+
+                        <div className="featured-grid">
+                            <div className="featured-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">Super Fast Data Hosting</h3>
+                                <p className="card-description">
+                                    Discover the latest techniques in cloud hosting and database optimization for lightning-fast applications.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+
+                            <div className="featured-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">AI-powered platforms</h3>
+                                <p className="card-description">
+                                    Explore how artificial intelligence is transforming modern web development and user experiences.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+
+                            <div className="featured-card">
+                                <span className="card-badge">ARTICLE</span>
+                                <h3 className="card-title">Practical Pair Components</h3>
+                                <p className="card-description">
+                                    Learn component-driven development and build reusable UI elements for scalable applications.
+                                </p>
+                                <button className="card-btn">
+                                    Read More <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Testimonial 2 */}
+                    <div className="testimonial-card">
+                        <div className="testimonial-avatar">
+                            <img src="https://i.pravatar.cc/150?img=33" alt="User" />
+                        </div>
+                        <div className="testimonial-content">
+                            <p className="testimonial-text">
+                                "I credit Codecademy for the skills I have today. I went from a complete beginner to landing my dream job as a software engineer. The structured learning path and hands-on projects gave me the confidence to pursue a career in tech. The community support was invaluable throughout my journey."
+                            </p>
+                            <p className="testimonial-author">— Michael Rodriguez, Software Engineer</p>
+                        </div>
+                    </div>
+
+                    {/* Footer */}
+                    <footer className="landing-footer">
+                        <div className="footer-grid">
                             <div className="footer-column">
-                                <h4>Platform</h4>
-                                <a href="#features">Features</a>
-                                <a href="#how-it-works">How It Works</a>
-                                <a href="#pricing">Pricing</a>
+                                <h4>Library</h4>
+                                <a href="#">Courses</a>
+                                <a href="#">Projects</a>
+                                <a href="#">Paths</a>
+                                <a href="#">Docs</a>
                             </div>
+
+                            <div className="footer-column">
+                                <h4>Support</h4>
+                                <a href="#">Help Center</a>
+                                <a href="#">Contact Us</a>
+                                <a href="#">Community</a>
+                                <a href="#">Blog</a>
+                            </div>
+
+                            <div className="footer-column">
+                                <h4>Teams</h4>
+                                <a href="#">For Business</a>
+                                <a href="#">For Education</a>
+                                <a href="#">Enterprise</a>
+                                <a href="#">Pricing</a>
+                            </div>
+
                             <div className="footer-column">
                                 <h4>Company</h4>
-                                <a href="#about">About Us</a>
-                                <a href="#contact">Contact</a>
-                                <a href="#careers">Careers</a>
+                                <a href="#">About</a>
+                                <a href="#">Careers</a>
+                                <a href="#">Press</a>
+                                <a href="#">Partners</a>
                             </div>
+
                             <div className="footer-column">
-                                <h4>Legal</h4>
-                                <a href="#privacy">Privacy Policy</a>
-                                <a href="#terms">Terms of Service</a>
+                                <h4>Community & Support</h4>
+                                <a href="#">Forums</a>
+                                <a href="#">Discord</a>
+                                <a href="#">Events</a>
+                                <a href="#">Newsletter</a>
                             </div>
                         </div>
-                    </div>
-                    <div className="footer-bottom">
-                        <p>&copy; 2026 Bharat Lancer. All rights reserved.</p>
-                    </div>
+
+                        <div className="footer-bottom">
+                            <p>© 2026 Bharat Lancer. All rights reserved.</p>
+                            <div className="footer-links">
+                                <a href="#">Privacy Policy</a>
+                                <a href="#">Terms of Service</a>
+                                <a href="#">Cookie Policy</a>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
-            </footer>
+            </div>
         </div>
     );
 };
