@@ -1,0 +1,233 @@
+.activity-page {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.activity-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+}
+
+.activity-header p {
+    color: var(--gray-600);
+    font-size: 1rem;
+}
+
+/* Filter Tabs */
+.activity-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-light);
+    overflow-x: auto;
+    padding-bottom: 0;
+}
+
+.filter-tab {
+    padding: 0.75rem 1.5rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+    bottom: -2px;
+}
+
+.filter-tab:hover {
+    color: var(--primary-blue);
+    background: var(--info-light);
+}
+
+.filter-tab.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.activity-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.activity-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.activity-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+}
+
+.activity-time {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--gray-500);
+    white-space: nowrap;
+}
+
+.activity-content p {
+    color: var(--gray-600);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.activity-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.activity-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-pending {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-success {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status-rejected {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-warning {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status-info {
+    background: #E0E7FF;
+    color: #3730A3;
+}
+
+.status-unread {
+    background: #F3E8FF;
+    color: #6B21A8;
+}
+
+.status-read {
+    background: #F3F4F6;
+    color: #4B5563;
+}
+
+/* No Activity State */
+.no-activity {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--gray-400);
+}
+
+.no-activity svg {
+    margin-bottom: 1rem;
+}
+
+.no-activity h3 {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    margin-bottom: 0.5rem;
+}
+
+.no-activity p {
+    color: var(--gray-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .activity-page {
+        padding: 1rem;
+    }
+
+    .activity-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .activity-filters {
+        gap: 0.25rem;
+    }
+
+    .filter-tab {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .activity-item {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .activity-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
