@@ -56,7 +56,7 @@ const chatRoutes = require('./routes/chatRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const notificationRoutes = require('./routes/notifications');
 const aiRoutes = require('./routes/aiRoutes');
-const geminiRoutes = require('./routes/geminiRoutes'); // Added geminiRoutes
+const geminiRoutes = require('./routes/gemini');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
