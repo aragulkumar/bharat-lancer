@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: yourusername/bharathlancers-backend:latest
+        image: aragulkumar/bharathlancers-backend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
