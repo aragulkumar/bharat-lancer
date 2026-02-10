@@ -163,7 +163,10 @@
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0.5rem 0;
+    min-height: 0;
+    /* Important: allows flex child to shrink */
 }
 
 .sidebar-nav::-webkit-scrollbar {
