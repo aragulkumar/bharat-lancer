@@ -18,6 +18,7 @@ import {
     Moon,
     ChevronDown,
     ChevronRight,
+    ChevronLeft,
     MoreHorizontal,
     Search
 } from 'lucide-react';
@@ -145,15 +146,14 @@ const Sidebar = () => {
                     <div className="brand-icon">BL</div>
                     {!collapsed && <span className="brand-text">Bharat Lancer</span>}
                 </div>
+                <button
+                    className="collapse-toggle"
+                    onClick={() => setCollapsed(!collapsed)}
+                    title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                >
+                    {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </button>
             </div>
-
-            {/* Search Bar */}
-            {!collapsed && (
-                <div className="sidebar-search">
-                    <Search size={18} className="search-icon" />
-                    <input type="text" placeholder="Search..." />
-                </div>
-            )}
 
             {/* Navigation Sections */}
             <div className="sidebar-content">

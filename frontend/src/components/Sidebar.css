@@ -76,8 +76,35 @@
     color: #0F172A;
 }
 
+.collapse-toggle {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-theme="light"] .collapse-toggle {
+    color: #6B7280;
+}
+
+.collapse-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+[data-theme="light"] .collapse-toggle:hover {
+    background: #F3F4F6;
+    color: #1F2937;
+}
+
 /* ========================================
-   SEARCH BAR
+   SEARCH BAR (REMOVED)
    ======================================== */
 
 .sidebar-search {

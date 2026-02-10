@@ -41,11 +41,11 @@ const JobList = () => {
     const filteredJobs = jobs.filter(job => {
         const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             job.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesType = !filters.type || job.type === filters.type;
-        const matchesBudget = (!filters.minBudget || job.budget >= Number(filters.minBudget)) &&
-            (!filters.maxBudget || job.budget <= Number(filters.maxBudget));
+        const matchesType = !filters.type || job.jobType === filters.type;
+        const matchesBudget = (!filters.minBudget || (job.budget?.max || 0) >= Number(filters.minBudget)) &&
+            (!filters.maxBudget || (job.budget?.min || 0) <= Number(filters.maxBudget));
         const matchesLocation = !filters.location ||
-            job.location.toLowerCase().includes(filters.location.toLowerCase());
+            (job.locationPreference || '').toLowerCase().includes(filters.location.toLowerCase());
 
         return matchesSearch && matchesType && matchesBudget && matchesLocation;
     });
@@ -217,7 +217,7 @@ const JobList = () => {
                                             <h4>{job.employer?.name}</h4>
                                             <span className="employer-location">
                                                 <MapPin size={14} />
-                                                {job.location}
+                                                {job.locationPreference || 'Remote'}
                                             </span>
                                         </div>
                                     </div>
@@ -249,7 +249,9 @@ const JobList = () => {
                                     <div className="job-meta">
                                         <div className="meta-item budget">
                                             <DollarSign size={16} />
-                                            <span className="budget-amount">{formatBudget(job.budget)}</span>
+                                            <span className="budget-amount">
+                                                {formatBudget(job.budget?.min || 0)} - {formatBudget(job.budget?.max || 0)}
+                                            </span>
                                         </div>
                                         <div className="meta-item">
                                             <Clock size={16} />
@@ -257,7 +259,7 @@ const JobList = () => {
                                         </div>
                                         <div className="meta-item">
                                             <Users size={16} />
-                                            <span>{job.type}</span>
+                                            <span>{job.jobType}</span>
                                         </div>
                                     </div>
 
