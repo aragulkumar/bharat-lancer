@@ -69,6 +69,8 @@ Rules:
         const response = await result.response;
         const text = response.text();
 
+        console.log('Gemini Raw Response:', text);
+
         // Parse JSON from response
         let parsedData;
         try {
@@ -76,15 +78,18 @@ Rules:
             const jsonMatch = text.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
                 parsedData = JSON.parse(jsonMatch[0]);
+                console.log('Parsed JSON Data:', parsedData);
             } else {
                 throw new Error('No JSON found in response');
             }
         } catch (parseError) {
             console.error('Error parsing Gemini response:', parseError);
+            console.error('Raw text:', text);
             return res.status(500).json({
                 success: false,
                 message: 'Failed to parse AI response',
-                error: parseError.message
+                error: parseError.message,
+                rawResponse: text
             });
         }
 
