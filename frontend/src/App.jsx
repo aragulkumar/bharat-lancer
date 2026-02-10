@@ -116,7 +116,7 @@ function AppRoutes() {
       <Route
         path="/applications"
         element={
-          <ProtectedRoute requireRole="employer">
+          <ProtectedRoute>
             <AuthenticatedLayout>
               <Applications />
             </AuthenticatedLayout>
