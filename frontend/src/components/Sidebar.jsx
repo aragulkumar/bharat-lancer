@@ -61,7 +61,6 @@ const Sidebar = () => {
                     path: '/applications',
                     icon: <Activity size={20} />,
                     label: 'Activity',
-                    badge: 21,
                     expandable: true
                 },
                 {
@@ -80,8 +79,7 @@ const Sidebar = () => {
                     id: 'notification',
                     path: '/notifications',
                     icon: <Bell size={20} />,
-                    label: 'Notification',
-                    badge: 21
+                    label: 'Notification'
                 }
             ]
         },
