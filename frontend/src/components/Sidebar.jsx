@@ -64,7 +64,7 @@ const Sidebar = () => {
                 {
                     id: 'users',
                     path: '/users',
-                    icon: <Users size={20} />,
+                    icon: <UsersIcon size={20} />,
                     label: 'Users'
                 },
                 {
