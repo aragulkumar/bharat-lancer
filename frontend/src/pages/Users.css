@@ -52,13 +52,6 @@
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-.search-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 0.9375rem;
-}
-
 .users-list {
     flex: 1;
     overflow-y: auto;
