@@ -107,7 +107,7 @@
 
 /* Content Wrapper */
 .content-wrapper {
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 0;
     padding-top: 5rem;
 }
 
@@ -406,9 +406,9 @@
 /* Footer */
 .landing-footer {
     background: #1A2332;
-    border-radius: 16px;
+    border-radius: 16px 16px 0 0;
     padding: 3rem;
-    margin-top: 3rem;
+    margin-top: 0;
     color: white;
 }
 
