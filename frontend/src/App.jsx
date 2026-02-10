@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Activity from './pages/Activity';
 import JobList from './pages/JobList';
 import JobDetail from './pages/JobDetail';
 import CreateJob from './pages/CreateJob';
@@ -136,6 +137,17 @@ function AppRoutes() {
           <ProtectedRoute>
             <AuthenticatedLayout>
               <Chat />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/activity"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <Activity />
             </AuthenticatedLayout>
           </ProtectedRoute>
         }
