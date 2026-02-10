@@ -50,7 +50,7 @@ const Sidebar = () => {
                 },
                 {
                     id: 'activity',
-                    path: '/applications',
+                    path: '/activity',
                     icon: <Activity size={20} />,
                     label: 'Activity',
                     expandable: true
