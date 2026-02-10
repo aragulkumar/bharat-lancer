@@ -274,8 +274,11 @@ const JobList = () => {
             if (transcript.trim()) {
                 setIsProcessing(true); // Show loading indicator
                 try {
+                    console.log('📤 Sending to Gemini:', transcript);
                     const response = await geminiAPI.parseJob(transcript);
+                    console.log('📥 API Response:', response);
                     const parsedData = response.data.data;
+                    console.log('✅ Parsed:', parsedData);
 
                     // Fill form fields with AI-parsed data
                     setJobFormData(prev => ({
@@ -293,7 +296,8 @@ const JobList = () => {
                     }));
                     setIsProcessing(false); // Hide loading
                 } catch (error) {
-                    console.error('Error parsing with Gemini:', error);
+                    console.error('❌ Gemini Error:', error);
+                    console.error('Error response:', error.response?.data);
                     setIsProcessing(false); // Hide loading
                     // Fallback to local parsing if API fails
                     const parsedData = parseJobFromTranscript(transcript);
