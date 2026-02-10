@@ -109,8 +109,8 @@ const Applications = () => {
 
     const handleStartChat = async (userId, userName) => {
         try {
-            // Navigate to chat with this user
-            navigate(`/chat?userId=${userId}`);
+            // Navigate to chat with this user pre-selected
+            navigate(`/chat?userId=${userId}&name=${encodeURIComponent(userName || 'User')}`);
         } catch (error) {
             console.error('Error starting chat:', error);
         }

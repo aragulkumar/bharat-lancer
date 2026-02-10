@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import {
     Briefcase,
     FileText,
@@ -10,12 +11,15 @@ import {
     Menu,
     X,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    Sun,
+    Moon
 } from 'lucide-react';
 import './Sidebar.css';
 
 const Sidebar = () => {
     const { user, logout } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -131,6 +135,26 @@ const Sidebar = () => {
                         </NavLink>
                     ))}
                 </nav>
+
+                {/* Theme Toggle */}
+                {!collapsed && (
+                    <div className="theme-toggle-section">
+                        <button
+                            className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+                            onClick={() => theme !== 'dark' && toggleTheme()}
+                        >
+                            <Moon size={16} />
+                            <span>Dark</span>
+                        </button>
+                        <button
+                            className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+                            onClick={() => theme !== 'light' && toggleTheme()}
+                        >
+                            <Sun size={16} />
+                            <span>Light</span>
+                        </button>
+                    </div>
+                )}
 
                 {/* Logout Button */}
                 <div className="sidebar-footer">
