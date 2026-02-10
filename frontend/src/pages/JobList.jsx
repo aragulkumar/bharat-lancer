@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { jobsAPI } from '../services/api';
 import {
     Briefcase, MapPin, DollarSign, Clock, Search,
-    Filter, Plus, TrendingUp, Star, Users
+    Filter, Plus, TrendingUp, Star, Users, X, Mic, MicOff
 } from 'lucide-react';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
@@ -22,6 +22,18 @@ const JobList = () => {
         location: ''
     });
     const [showFilters, setShowFilters] = useState(false);
+    const [showJobModal, setShowJobModal] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
+    const [jobFormData, setJobFormData] = useState({
+        title: '',
+        description: '',
+        requiredSkills: '',
+        budgetMin: '',
+        budgetMax: '',
+        locationPreference: '',
+        duration: '',
+        jobType: 'freelance'
+    });
 
     useEffect(() => {
         fetchJobs();
@@ -95,12 +107,14 @@ const JobList = () => {
                     </div>
 
                     {isEmployer && (
-                        <Link to="/create-job">
-                            <Button variant="primary" size="lg">
-                                <Plus size={20} />
-                                Post a Job
-                            </Button>
-                        </Link>
+                        <Button
+                            variant="primary"
+                            size="lg"
+                            onClick={() => setShowJobModal(true)}
+                        >
+                            <Plus size={20} />
+                            Post a Job
+                        </Button>
                     )}
                 </div>
 
@@ -272,6 +286,147 @@ const JobList = () => {
                     )}
                 </div>
             </div>
+
+            {/* Job Posting Modal */}
+            {showJobModal && (
+                <div className="modal-overlay" onClick={() => setShowJobModal(false)}>
+                    <div className="job-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Post a New Job</h2>
+                            <button className="modal-close" onClick={() => setShowJobModal(false)}>
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="modal-body">
+                            {/* Voice Input Section */}
+                            <div className="voice-input-section">
+                                <button
+                                    className={`voice-record-btn ${isRecording ? 'recording' : ''}`}
+                                    onClick={() => setIsRecording(!isRecording)}
+                                >
+                                    {isRecording ? <MicOff size={24} /> : <Mic size={24} />}
+                                    {isRecording ? 'Stop Recording' : 'Record Job Details'}
+                                </button>
+                                <p className="voice-hint">
+                                    {isRecording
+                                        ? 'Speak clearly about the job requirements...'
+                                        : 'Click to record job details using your voice'}
+                                </p>
+                            </div>
+
+                            <div className="divider">
+                                <span>OR</span>
+                            </div>
+
+                            {/* Manual Input Form */}
+                            <form className="job-form">
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>Job Title *</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g., Full Stack Developer"
+                                            value={jobFormData.title}
+                                            onChange={(e) => setJobFormData({ ...jobFormData, title: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Description *</label>
+                                    <textarea
+                                        placeholder="Describe the job requirements, responsibilities, and expectations..."
+                                        value={jobFormData.description}
+                                        onChange={(e) => setJobFormData({ ...jobFormData, description: e.target.value })}
+                                        rows={4}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Required Skills (comma-separated) *</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g., React, Node.js, MongoDB"
+                                        value={jobFormData.requiredSkills}
+                                        onChange={(e) => setJobFormData({ ...jobFormData, requiredSkills: e.target.value })}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>Min Budget (₹) *</label>
+                                        <input
+                                            type="number"
+                                            placeholder="30000"
+                                            value={jobFormData.budgetMin}
+                                            onChange={(e) => setJobFormData({ ...jobFormData, budgetMin: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Max Budget (₹) *</label>
+                                        <input
+                                            type="number"
+                                            placeholder="50000"
+                                            value={jobFormData.budgetMax}
+                                            onChange={(e) => setJobFormData({ ...jobFormData, budgetMax: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>Location</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g., Remote, Mumbai"
+                                            value={jobFormData.locationPreference}
+                                            onChange={(e) => setJobFormData({ ...jobFormData, locationPreference: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Duration</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g., 2-3 months"
+                                            value={jobFormData.duration}
+                                            onChange={(e) => setJobFormData({ ...jobFormData, duration: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Job Type</label>
+                                    <select
+                                        value={jobFormData.jobType}
+                                        onChange={(e) => setJobFormData({ ...jobFormData, jobType: e.target.value })}
+                                    >
+                                        <option value="freelance">Freelance</option>
+                                        <option value="contract">Contract</option>
+                                        <option value="full-time">Full-time</option>
+                                        <option value="part-time">Part-time</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div className="modal-footer">
+                            <Button variant="outline" onClick={() => setShowJobModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary">
+                                <Plus size={18} />
+                                Post Job
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
