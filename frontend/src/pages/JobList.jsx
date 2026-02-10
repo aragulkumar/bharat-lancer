@@ -419,7 +419,7 @@ const JobList = () => {
                             <Button variant="outline" onClick={() => setShowJobModal(false)}>
                                 Cancel
                             </Button>
-                            <Button variant="primary">
+                            <Button variant="primary" onClick={handlePostJob}>
                                 <Plus size={18} />
                                 Post Job
                             </Button>

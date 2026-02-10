@@ -14,48 +14,50 @@
 }
 
 .sidebar-header {
-    padding: 1.25rem 1rem;
+    padding: 1rem;
+    background: #F9FAFB;
     border-bottom: 1px solid #E5E7EB;
 }
 
 .sidebar-header h2 {
     font-size: 1.25rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--gray-900);
 }
 
 .sidebar-header p {
     color: var(--gray-500);
     font-size: 0.8125rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
 }
 
 .search-box {
-    padding: 0 1rem 1rem 1rem;
-    border-bottom: 1px solid #E5E7EB;
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: white;
+    gap: 0.625rem;
+    background: #F9FAFB;
 }
 
 .search-box svg {
-    color: var(--gray-400);
+    color: var(--gray-500);
     flex-shrink: 0;
 }
 
 .search-box input {
     flex: 1;
     border: none;
-    background: #F3F4F6;
-    border-radius: 20px;
+    background: #E5E7EB;
+    border-radius: 24px;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     outline: none;
     transition: all 0.2s;
+    color: var(--gray-700);
 }
 
 .search-box input:focus {
-    background: #E5E7EB;
+    background: #D1D5DB;
 }
 
 .search-box input::placeholder {

@@ -235,19 +235,58 @@ const Sidebar = () => {
 
             {/* User Profile */}
             <div className="sidebar-user">
-                <div className="user-avatar">
-                    {user?.name?.charAt(0).toUpperCase() || 'A'}
-                </div>
-                {!collapsed && (
-                    <>
+                <div
+                    className="user-profile-section"
+                    onClick={() => navigate('/profile')}
+                    style={{ cursor: 'pointer', flex: 1, display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                >
+                    <div className="user-avatar">
+                        {user?.name?.charAt(0).toUpperCase() || 'A'}
+                    </div>
+                    {!collapsed && (
                         <div className="user-info">
                             <div className="user-name">{user?.name || 'Alexander'}</div>
                             <div className="user-email">{user?.email || 'alex@zemlya.com'}</div>
                         </div>
-                        <button className="user-menu-btn">
+                    )}
+                </div>
+                {!collapsed && (
+                    <div className="user-menu-container">
+                        <button
+                            className="user-menu-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setShowProfileMenu(!showProfileMenu);
+                            }}
+                        >
                             <MoreHorizontal size={20} />
                         </button>
-                    </>
+                        {showProfileMenu && (
+                            <div className="profile-dropdown">
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                        navigate('/profile');
+                                        setShowProfileMenu(false);
+                                    }}
+                                >
+                                    <User size={16} />
+                                    <span>Edit Profile</span>
+                                </button>
+                                <button
+                                    className="dropdown-item logout"
+                                    onClick={() => {
+                                        logout();
+                                        navigate('/login');
+                                        setShowProfileMenu(false);
+                                    }}
+                                >
+                                    <LogOut size={16} />
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 )}
             </div>
         </aside>

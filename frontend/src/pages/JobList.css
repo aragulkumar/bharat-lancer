@@ -28,19 +28,22 @@
     display: flex;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
+    align-items: center;
 }
 
 .search-box {
     flex: 1;
+    max-width: 600px;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .search-icon {
     position: absolute;
     left: var(--spacing-md);
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--gray-400);
+    pointer-events: none;
 }
 
 .search-input {
@@ -73,6 +76,7 @@
     cursor: pointer;
     transition: all var(--transition-fast);
     white-space: nowrap;
+    height: 48px;
 }
 
 .filter-toggle:hover {
