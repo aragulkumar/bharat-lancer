@@ -186,12 +186,24 @@
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+    box-shadow: var(--shadow-sm);
 }
 
 .job-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-xl);
-    border-color: var(--primary-blue-light);
+    border-color: var(--primary-blue);
+}
+
+/* Dark mode job card enhancements */
+[data-theme='dark'] .job-card {
+    background: var(--bg-secondary);
+    border-color: var(--border-light);
+}
+
+[data-theme='dark'] .job-card:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-blue);
 }
 
 .job-card-header {
