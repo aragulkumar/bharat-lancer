@@ -86,18 +86,24 @@ const Applications = () => {
 
     const handleStatusUpdate = async (jobId, applicationId, status) => {
         try {
-            await jobsAPI.updateApplicationStatus(jobId, applicationId, {
+            console.log('Updating application status:', { jobId, applicationId, status });
+
+            const response = await jobsAPI.updateApplicationStatus(jobId, applicationId, {
                 status,
                 message: replyMessage
             });
 
+            console.log('Status update response:', response);
             alert(`Application ${status}!`);
             setReplyMessage('');
             setSelectedApp(null);
             fetchApplications();
         } catch (error) {
             console.error('Error updating status:', error);
-            alert('Failed to update application status');
+            console.error('Error response:', error.response?.data);
+            console.error('Error status:', error.response?.status);
+            console.error('Request details:', { jobId, applicationId, status, message: replyMessage });
+            alert(`Failed to update application status: ${error.response?.data?.message || error.message}`);
         }
     };
 
